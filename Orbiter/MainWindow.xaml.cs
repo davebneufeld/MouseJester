@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Hardcodet.Wpf.TaskbarNotification;
 
 namespace Orbiter
 {
@@ -20,15 +21,42 @@ namespace Orbiter
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static event EventHandler ShowEvent;
+        public static event EventHandler CloseEvent;
+
+        public static void ExecuteShowEvent()
+        {
+            EventHandler handler = MainWindow.ShowEvent;
+            if (handler != null)
+            {
+                handler(null, new EventArgs());
+            }
+        }
+
+        public static void ExecuteCloseEvent()
+        {
+            EventHandler handler = MainWindow.CloseEvent;
+            if (handler != null)
+            {
+                handler(null, new EventArgs());
+            }
+        }
+
+
         const int GESTURE_INPUT_ID = 1;
         List<HotKey> DefinedHotKeys;
 
         public MainWindow()
         {
-            DefinedHotKeys = new List<HotKey>();
             InitializeComponent();
+
+            DefinedHotKeys = new List<HotKey>();
             HotKeyWindow.Instance.AddHotKeyHandler(HotkeyHandler);
-            DefinedHotKeys.Add(new HotKey(GESTURE_INPUT_ID, (uint) KeyModifier.Ctrl, (uint) VirtualKey.B));
+            ShowEvent += ShowEventHandler;
+            CloseEvent += CloseEventHandler;
+
+            DefinedHotKeys.Add(new HotKey(GESTURE_INPUT_ID, (uint)KeyModifier.Ctrl, (uint)VirtualKey.B));
+            DefinedHotKeys.Add(new HotKey(3, (uint)KeyModifier.Ctrl, (uint)VirtualKey.N4));
         }
 
         protected override void OnClosed(EventArgs e)
@@ -38,18 +66,30 @@ namespace Orbiter
             {
                 hkey.Dispose();
             }
-            HotKeyWindow.Instance.Close();
         }
 
-        private void frmMain_Resize(object sender, EventArgs e)
+        protected override void OnStateChanged(EventArgs e)
         {
-            //minimize to taskbar.
+            if (this.WindowState == WindowState.Minimized)
+            {
+                this.Hide();
+            }
         }
 
         private void HotkeyHandler(Object sender, HotKeyEventArgs e)
         {
             int id = e.id;
-            MessageBox.Show("Hello World. " + id);
+            MessageBox.Show(HotKeyWindow.Instance, "Hello World. " + id);
+        }
+
+        private void ShowEventHandler(object sender, EventArgs e)
+        {
+            Show();
+        }
+
+        private void CloseEventHandler(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }
