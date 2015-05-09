@@ -20,13 +20,30 @@ namespace Orbiter
     /// </summary>
     public partial class MainWindow : Window
     {
-        const int GESTURE_INPUT_ID = 0;
+        const int GESTURE_INPUT_ID = 1;
+        List<HotKey> DefinedHotKeys;
 
         public MainWindow()
         {
+            DefinedHotKeys = new List<HotKey>();
             InitializeComponent();
             HotKeyWindow.Instance.AddHotKeyHandler(HotkeyHandler);
-            HotKey initGestureInput = new HotKey(GESTURE_INPUT_ID, (uint) HotKey.Modifiers.CTRL, (uint) VirtualKey.B);
+            DefinedHotKeys.Add(new HotKey(GESTURE_INPUT_ID, (uint) KeyModifier.Ctrl, (uint) VirtualKey.B));
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+            foreach (HotKey hkey in DefinedHotKeys)
+            {
+                hkey.Dispose();
+            }
+            HotKeyWindow.Instance.Close();
+        }
+
+        private void frmMain_Resize(object sender, EventArgs e)
+        {
+            //minimize to taskbar.
         }
 
         private void HotkeyHandler(Object sender, HotKeyEventArgs e)

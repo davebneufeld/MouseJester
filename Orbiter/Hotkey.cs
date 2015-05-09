@@ -11,19 +11,10 @@ namespace Orbiter
 {
     class HotKey : IDisposable
     {
-        public enum Modifiers : uint
-        {
-            NONE = 0x0000,
-            ALT = 0x0001,
-            CTRL = 0x0002,
-            NOREPEAT = 0x4000,
-            SHIFT = 0x0004,
-            WIN = 0x0008
-        }
-
         // Registers a hot key with Windows.
         [DllImport("user32.dll")]
         private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
+
         // Unregisters the hot key with Windows.
         [DllImport("user32.dll")]
         private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
@@ -37,7 +28,10 @@ namespace Orbiter
         {
             this.id = id;
             hWnd = (new WindowInteropHelper(HotKeyWindow.Instance)).Handle;
-            RegisterHotKey(hWnd, id, modifiers, vk);
+            if(!RegisterHotKey(hWnd, id, modifiers, vk))
+            {
+                Console.WriteLine("Failed to register hotkey with ID: " + id);
+            }
         }
 
         public void Dispose() 

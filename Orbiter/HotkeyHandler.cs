@@ -37,6 +37,12 @@ namespace Orbiter
 
             private HotKeyWindow() : base()
             {
+                Width = 0;
+                Height = 0;
+                WindowStyle = WindowStyle.None;
+                ShowInTaskbar = false;
+                ShowActivated = false;
+                Show();
             }
 
             const int WM_HOTKEY = 0x0312;
