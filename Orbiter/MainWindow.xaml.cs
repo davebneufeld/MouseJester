@@ -20,9 +20,19 @@ namespace Orbiter
     /// </summary>
     public partial class MainWindow : Window
     {
+        const int GESTURE_INPUT_ID = 0;
+
         public MainWindow()
         {
             InitializeComponent();
+            HotKeyWindow.Instance.AddHotKeyHandler(HotkeyHandler);
+            HotKey initGestureInput = new HotKey(GESTURE_INPUT_ID, (uint) HotKey.Modifiers.CTRL, (uint) VirtualKey.B);
+        }
+
+        private void HotkeyHandler(Object sender, HotKeyEventArgs e)
+        {
+            int id = e.id;
+            MessageBox.Show("Hello World. " + id);
         }
     }
 }
