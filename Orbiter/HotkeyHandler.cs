@@ -111,7 +111,7 @@ namespace Orbiter
                     //check hotkey register ID
                     int id = wParam.ToInt32();
 
-                    //raise the event
+                    //raise the event with the hotkey ID
                     HotkeyHandlerDelegate handler = HotKeyPressedEvent;
                     if (handler != null)
                     {

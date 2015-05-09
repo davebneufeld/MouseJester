@@ -12,7 +12,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Hardcodet.Wpf.TaskbarNotification;
 
 namespace Orbiter
 {
@@ -41,7 +40,6 @@ namespace Orbiter
                 handler(null, new EventArgs());
             }
         }
-
 
         const int GESTURE_INPUT_ID = 1;
         List<HotKey> DefinedHotKeys;
@@ -84,12 +82,16 @@ namespace Orbiter
 
         private void ShowEventHandler(object sender, EventArgs e)
         {
-            Show();
+            this.Show();
+            if (this.WindowState == WindowState.Minimized)
+            {
+                this.WindowState = WindowState.Normal;
+            }
         }
 
         private void CloseEventHandler(object sender, EventArgs e)
         {
-            Close();
+            this.Close();
         }
     }
 }
