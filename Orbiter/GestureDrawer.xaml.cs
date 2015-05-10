@@ -19,7 +19,7 @@ namespace Orbiter
     {
         private bool mouseDown = false;
         private Point prevPos = new Point(-1, -1);
-        private double minX = Double.MaxValue, minY = Double.MaxValue, maxX = Double.MinValue, maxY = Double.MinValue;
+        private double minX, minY, maxX, maxY;
         private List<Point> rawPoints = new List<Point>();
         private Brush confirmColor = Brushes.Red;
 
@@ -88,44 +88,40 @@ namespace Orbiter
             if (mouseDown)
             {
                 Point pos = e.GetPosition(this);
-                rawPoints.Add(pos);
+                List<Point> normalizedLenPoints = new List<Point>();
+                double dist = Math.Sqrt(Math.Pow(pos.X - prevPos.X, 2) + Math.Pow(pos.Y - prevPos.Y, 2));
+                double segs = dist / Constants.MIN_LINE_LEN;
+                Point unit = new Point((pos.X - prevPos.X) / segs, (pos.Y - prevPos.Y) / segs);
+                for (int i = 0; i < (int)segs; i++)
+                {
+                    Point curPos = new Point(prevPos.X + unit.X, prevPos.Y + unit.Y);
+                    rawPoints.Add(curPos);
+                    DrawLine(prevPos, curPos, drawColor, outlineColor, drawOutline);
+                    prevPos = curPos;
 
-                DrawLine(prevPos, pos, drawColor, outlineColor, drawOutline);
-                prevPos = pos;
-
-                minX = Math.Min(minX, pos.X);
-                minY = Math.Min(minY, pos.Y);
-                maxX = Math.Max(maxX, pos.X);
-                maxY = Math.Max(maxY, pos.Y);
+                    minX = Math.Min(minX, pos.X);
+                    minY = Math.Min(minY, pos.Y);
+                    maxX = Math.Max(maxX, pos.X);
+                    maxY = Math.Max(maxY, pos.Y);
+                }
             }
         }
 
         private void MouseDownEventHandler(object sender, MouseEventArgs e)
         {
             mouseDown = true;
-            prevPos = e.GetPosition(this);
+            Point startPos = e.GetPosition(this);
+            rawPoints.Add(startPos);
+            prevPos = startPos;
+
+            minX = maxX = startPos.X;
+            minY = maxY = startPos.Y;
         }
 
         private void MouseUpEventHandler(object sender, MouseEventArgs e)
         {
-            Point prevPos = rawPoints[0];
-            List<Point> normalizedLenPoints = new List<Point>();
-            foreach (Point pos in rawPoints)
-            {
-
-                double d = Math.Sqrt(Math.Pow(pos.X - prevPos.X, 2) + Math.Pow(pos.Y - prevPos.Y, 2));
-                double segs = (int)(d / Constants.MIN_LINE_LEN);
-                Point unit = new Point((pos.X - prevPos.X) * Constants.MIN_LINE_LEN / d, (pos.Y - prevPos.Y) * Constants.MIN_LINE_LEN / d);
-                for (int i = 0; i < (int)segs; i++)
-                {
-                    Point curPos = new Point(prevPos.X + unit.X, prevPos.Y + unit.Y);
-                    normalizedLenPoints.Add(curPos);
-                    prevPos = curPos;
-                }
-            }
-
             mouseDown = false;
-            drawnGesture = new Gesture(normalizedLenPoints, minX, minY, maxX, maxY);
+            drawnGesture = new Gesture(rawPoints, minX, minY, maxX, maxY);
             if (drawnGesture != null)
             {
                 KeyValuePair<double, Gesture> matched = Gesture.Recognize(drawnGesture);

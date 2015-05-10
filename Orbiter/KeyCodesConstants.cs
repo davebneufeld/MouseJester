@@ -226,6 +226,6 @@ namespace Orbiter
         public const double GESTURE_WIDTH = 100;
         public const double GESTURE_HEIGHT = 100;
         public const int GESTURE_POINTS = 100;
-        public const int MIN_LINE_LEN = 5;
+        public const int MIN_LINE_LEN = 10;
     }
 }

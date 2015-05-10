@@ -111,15 +111,18 @@ namespace Orbiter
 
         public void scaleAndCenterGesture(List<Point> rawPoints, double minX, double minY, double maxX, double maxY)
         {
-            //double sourceDims = Math.Max(maxX - minX, maxY - minY);
+            //double sourceDims = Math.Max(maxX - minX, maxY - minY); TODO:
             double scaleFactorX = Constants.GESTURE_WIDTH / (maxX - minX);
             double scaleFactorY = Constants.GESTURE_HEIGHT / (maxY - minY);
-            double interpolationFactor = rawPoints.Count / Constants.GESTURE_POINTS;
-
+            double indexScaleFactor = (double) (rawPoints.Count - 1) / Constants.GESTURE_POINTS;
             _PointVector.Clear();
             for(int i = 0; i < Constants.GESTURE_POINTS; i++)
             {
-                Point scaledPoint = rawPoints[(int) interpolationFactor * i];
+                double scaledIndex = indexScaleFactor * i;
+                double interpolationFactor = scaledIndex - (int)scaledIndex;
+                Point lowerPoint = rawPoints[(int)scaledIndex];
+                Point upperPoint = rawPoints[(int)scaledIndex + 1];
+                Point scaledPoint = new Point(lowerPoint.X + interpolationFactor * (upperPoint.X - lowerPoint.X), lowerPoint.Y + interpolationFactor * (upperPoint.Y - lowerPoint.Y));
                 _PointVector.Add(new Point(scaleFactorX * (scaledPoint.X - minX), scaleFactorY * (scaledPoint.Y - minY)));
             }
         }
