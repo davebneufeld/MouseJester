@@ -47,14 +47,19 @@ namespace Orbiter
         public MainWindow()
         {
             InitializeComponent();
-
+            new GestureDrawer();
             DefinedHotKeys = new List<HotKey>();
-            HotKeyWindow.Instance.AddHotKeyHandler(HotkeyHandler);
             ShowEvent += ShowEventHandler;
             CloseEvent += CloseEventHandler;
 
             DefinedHotKeys.Add(new HotKey(GESTURE_INPUT_ID, (uint)KeyModifier.Ctrl, (uint)VirtualKey.B));
-            DefinedHotKeys.Add(new HotKey(3, (uint)KeyModifier.Ctrl, (uint)VirtualKey.N4));
+            DefinedHotKeys.Add(new HotKey(3, (uint)KeyModifier.Ctrl, (uint)VirtualKey.C));
+
+            foreach(HotKey hkey in DefinedHotKeys) 
+            {
+                hkey.AddHotKeyHandler(HotkeyHandler);
+            }
+            
         }
 
         protected override void OnClosed(EventArgs e)

@@ -8,5 +8,7 @@ namespace Orbiter
 {
     class Gesture
     {
+        public static void inputGesture()
+        { }
     }
 }
