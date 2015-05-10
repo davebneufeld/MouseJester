@@ -223,8 +223,8 @@ namespace Orbiter
     {
         public const int GESTURE_INPUT_ID = 1;
         public const double MATCH_THRESHOLD = 0.80;
-        public const double GESTURE_WIDTH = 100;
-        public const double GESTURE_HEIGHT = 100;
+        public const double GESTURE_WIDTH = 1000;
+        public const double GESTURE_HEIGHT = 1000;
         public const int GESTURE_POINTS = 100;
         public const int MIN_LINE_LEN = 10;
     }

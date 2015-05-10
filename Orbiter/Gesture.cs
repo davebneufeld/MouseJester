@@ -46,8 +46,7 @@ namespace Orbiter
 
         public static GestureDrawer inputGesture(bool isMatching /*as opposed to defining*/)
         {
-            GestureDrawer drawer = new GestureDrawer(Brushes.LightSteelBlue, Brushes.Black, true, isMatching);
-
+            GestureDrawer drawer = new GestureDrawer(Brushes.LightSteelBlue, Brushes.Black, true, isMatching, true);
             if (drawer.DialogResult == true)
             {
                 return drawer;
@@ -71,7 +70,7 @@ namespace Orbiter
 
         public static KeyValuePair<double, Gesture> Recognize(Gesture g)
         {
-            return new KeyValuePair<double,Gesture>(0, null);
+            return new KeyValuePair<double,Gesture>(1, g);
         }
 
         //instanced stuff
@@ -111,19 +110,29 @@ namespace Orbiter
 
         public void scaleAndCenterGesture(List<Point> rawPoints, double minX, double minY, double maxX, double maxY)
         {
-            //double sourceDims = Math.Max(maxX - minX, maxY - minY); TODO:
-            double scaleFactorX = Constants.GESTURE_WIDTH / (maxX - minX);
-            double scaleFactorY = Constants.GESTURE_HEIGHT / (maxY - minY);
-            double indexScaleFactor = (double) (rawPoints.Count - 1) / Constants.GESTURE_POINTS;
-            _PointVector.Clear();
-            for(int i = 0; i < Constants.GESTURE_POINTS; i++)
+            if (rawPoints.Count < 2)
             {
-                double scaledIndex = indexScaleFactor * i;
-                double interpolationFactor = scaledIndex - (int)scaledIndex;
-                Point lowerPoint = rawPoints[(int)scaledIndex];
-                Point upperPoint = rawPoints[(int)scaledIndex + 1];
-                Point scaledPoint = new Point(lowerPoint.X + interpolationFactor * (upperPoint.X - lowerPoint.X), lowerPoint.Y + interpolationFactor * (upperPoint.Y - lowerPoint.Y));
-                _PointVector.Add(new Point(scaleFactorX * (scaledPoint.X - minX), scaleFactorY * (scaledPoint.Y - minY)));
+                for (int i = 0; i < Constants.GESTURE_POINTS; i++)
+                {
+                    _PointVector.Add(new Point(0,0));
+                }
+            }
+            else
+            {
+                //double sourceDims = Math.Max(maxX - minX, maxY - minY); TODO:
+                double scaleFactorX = Constants.GESTURE_WIDTH / (maxX - minX);
+                double scaleFactorY = Constants.GESTURE_HEIGHT / (maxY - minY);
+                double indexScaleFactor = (double)(rawPoints.Count - 1) / Constants.GESTURE_POINTS;
+                _PointVector.Clear();
+                for (int i = 0; i < Constants.GESTURE_POINTS; i++)
+                {
+                    double scaledIndex = indexScaleFactor * i;
+                    double interpolationFactor = scaledIndex - (int)scaledIndex;
+                    Point lowerPoint = rawPoints[(int)scaledIndex];
+                    Point upperPoint = rawPoints[(int)scaledIndex + 1];
+                    Point scaledPoint = new Point(lowerPoint.X + interpolationFactor * (upperPoint.X - lowerPoint.X), lowerPoint.Y + interpolationFactor * (upperPoint.Y - lowerPoint.Y));
+                    _PointVector.Add(new Point(scaleFactorX * (scaledPoint.X - minX), scaleFactorY * (scaledPoint.Y - minY)));
+                }
             }
         }
 

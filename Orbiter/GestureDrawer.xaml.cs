@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.ComponentModel;
 
 namespace Orbiter
 {
@@ -24,6 +25,7 @@ namespace Orbiter
         private Brush confirmColor = Brushes.Red;
 
         private bool isMatching;
+        private bool displayPreview;
         private bool drawOutline;
         private Brush drawColor;
         private Brush outlineColor;
@@ -32,7 +34,7 @@ namespace Orbiter
         public Gesture drawnGesture = null;
         public Gesture matchedGesture = null;
 
-        public GestureDrawer(Brush drawColor, Brush outlineColor, bool drawOutline, bool isMatching /*as opposed to defining a gesture*/)
+        public GestureDrawer(Brush drawColor, Brush outlineColor, bool drawOutline, bool isMatching /*as opposed to defining a gesture*/, bool displayPreview)
             : base()
         {
             InitializeComponent();
@@ -40,12 +42,12 @@ namespace Orbiter
             this.drawColor = drawColor;
             this.drawOutline = drawOutline;
             this.outlineColor = outlineColor;
+            this.displayPreview = displayPreview;
             ShowDialog();
         }
 
         private void DrawLine(Point prevPos, Point pos, Brush brushColor, Brush outlineColor, bool drawOutline)
         {
-            if (prevPos.X == -1 || prevPos.Y == -1) return;
             if (drawOutline)
             {
                 Line outline = new Line();
@@ -75,11 +77,11 @@ namespace Orbiter
 
         private void DrawVector(List<Point> points, Brush drawColor, Brush outlineColor, bool drawOutline)
         {
-            Point prevPos = new Point(-1, -1);
+            Point prevPos = points[0];
             foreach (Point pos in points)
             {
-                Console.WriteLine("klka2 " + pos.X + " , " + pos.Y);
                 DrawLine(prevPos, pos, drawColor, outlineColor, drawOutline);
+                prevPos = pos;
             }
         }
 
@@ -120,41 +122,50 @@ namespace Orbiter
 
         private void MouseUpEventHandler(object sender, MouseEventArgs e)
         {
+            BackgroundWorker worker = new BackgroundWorker();
+            worker.DoWork += processGesture;
+            worker.RunWorkerCompleted += processingCompleted;
+            worker.RunWorkerAsync();
+        }
+
+        private void processGesture(object sender, DoWorkEventArgs e)
+        {
             mouseDown = false;
             drawnGesture = new Gesture(rawPoints, minX, minY, maxX, maxY);
             if (drawnGesture != null)
             {
                 KeyValuePair<double, Gesture> matched = Gesture.Recognize(drawnGesture);
-                Gesture closestMatch = matched.Value;
                 double matchAccuracy = matched.Key;
+                Gesture closestMatch = matchAccuracy > Constants.MATCH_THRESHOLD? matched.Value : null;
 
-                drawingGrid.Children.Clear();
-                DrawGesture(drawnGesture, drawColor, outlineColor, true);
-
-                if (closestMatch != null)
+                if (displayPreview && closestMatch != null)
                 {
                     if (isMatching) //matching. display the matched gesture.
                     {
-                        if (matchAccuracy > Constants.MATCH_THRESHOLD)
+                        this.Dispatcher.Invoke((Action)(() =>
                         {
+                            drawingGrid.Children.Clear();
                             DrawGesture(closestMatch, confirmColor, outlineColor, true);
-                        }
+                        }));
                     }
                     else //defining. if too similar, display similar gesture.
                     {
-                        if (matchAccuracy > Constants.MATCH_THRESHOLD)
+                        defineTooSimilar = true;
+                        this.Dispatcher.Invoke((Action)(() =>
                         {
-                            defineTooSimilar = true;
+                            drawingGrid.Children.Clear();
                             DrawGesture(closestMatch, confirmColor, outlineColor, true);
-                            MessageBox.Show(this, "Gesture too similar to previously defined gesture.");
-                        }
+                            MessageBox.Show(this, "Gesture too similar to a previously defined gesture.");
+                        }));
                     }
+                    Thread.Sleep(500);
                 }
-                Thread.Sleep(2500);
             }
+        }
 
+        private void processingCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
             DialogResult = drawnGesture != null;
-            Close();
         }
     }
 }
