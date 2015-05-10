@@ -16,10 +16,40 @@ namespace Orbiter
 {
     public partial class GestureDrawer : Window
     {
+        private bool mouseDown = false;
+        private Point prevPos;
+        private List<Point> rawPoints = new List<Point>();
+        public Gesture drawnGesture = null;
+
         public GestureDrawer() : base()
         {
             InitializeComponent();
-            Show();
+            ShowDialog();
+        }
+
+        private void MouseMoveEventHandler(object sender, MouseEventArgs e)
+        {
+            if (mouseDown)
+            {
+                Point pos = e.GetPosition(this);
+                rawPoints.Add(pos);
+
+                //draw line from prevpos to pos
+            }
+        }
+
+        private void MouseDownEventHandler(object sender, MouseEventArgs e)
+        {
+            mouseDown = true;
+        }
+
+        private void MouseUpEventHandler(object sender, MouseEventArgs e)
+        {
+            mouseDown = false;
+
+            drawnGesture = new Gesture(rawPoints);
+            DialogResult = drawnGesture != null;
+            Close();
         }
     }
 }

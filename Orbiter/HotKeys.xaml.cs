@@ -18,7 +18,7 @@ using System.Windows.Shapes;
 
 namespace Orbiter
 {
-    class HotKey : IDisposable
+    public class HotKey : IDisposable
     {
         // Registers a hot key with Windows.
         [DllImport("user32.dll")]
@@ -30,7 +30,7 @@ namespace Orbiter
 
         public event HotkeyHandlerDelegate HotKeyPressedEvent;
 
-        internal int id;
+        public int id;
         private bool disposed = false;
         private IntPtr hWnd;
 
@@ -40,10 +40,15 @@ namespace Orbiter
             hWnd = (new WindowInteropHelper(HotKeyWindow.Instance)).Handle;
             if(!RegisterHotKey(hWnd, id, modifiers, vk))
             {
-                Console.WriteLine("Failed to register hotkey with ID: " + id);
+                MessageBox.Show(HotKeyWindow.Instance, "Failed to register hotkey with ID: " + id);
                 return;
             }
             HotKeyWindow.RegisterHotKey(this);
+        }
+
+        public HotKey(int id, uint modifiers, uint vk, HotkeyHandlerDelegate HotKeyHandler) : this(id, modifiers, vk)
+        {
+            AddHotKeyHandler(HotKeyHandler);
         }
 
         public void Dispose() 
@@ -94,6 +99,7 @@ namespace Orbiter
     {
         private static HotKeyWindow _instance = null;
         private static List<HotKey> registeredKeys = new List<HotKey>();
+
         public static HotKeyWindow Instance
         {
             get

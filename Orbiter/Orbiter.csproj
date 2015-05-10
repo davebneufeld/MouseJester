@@ -56,7 +56,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Commands.cs" />
-    <Compile Include="KeyCodes.cs" />
+    <Compile Include="KeyCodesConstants.cs" />
     <Compile Include="GestureDrawer.xaml.cs">
       <DependentUpon>GestureDrawer.xaml</DependentUpon>
     </Compile>

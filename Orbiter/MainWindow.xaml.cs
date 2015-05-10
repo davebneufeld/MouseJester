@@ -41,25 +41,21 @@ namespace Orbiter
             }
         }
 
-        const int GESTURE_INPUT_ID = 1;
         List<HotKey> DefinedHotKeys;
 
         public MainWindow()
         {
             InitializeComponent();
-            new GestureDrawer();
             DefinedHotKeys = new List<HotKey>();
             ShowEvent += ShowEventHandler;
             CloseEvent += CloseEventHandler;
 
-            DefinedHotKeys.Add(new HotKey(GESTURE_INPUT_ID, (uint)KeyModifier.Ctrl, (uint)VirtualKey.B));
-            DefinedHotKeys.Add(new HotKey(3, (uint)KeyModifier.Ctrl, (uint)VirtualKey.C));
+            Gesture.hkey = new HotKey(Constants.GESTURE_INPUT_ID, (uint)KeyModifier.Ctrl, (uint)VirtualKey.B, Gesture.HotKeyHandler);
+            DefinedHotKeys.Add(Gesture.hkey);
 
-            foreach(HotKey hkey in DefinedHotKeys) 
-            {
-                hkey.AddHotKeyHandler(HotkeyHandler);
-            }
-            
+            //DefinedHotKeys.Add(new HotKey(Constants.GESTURE_INPUT_ID, (uint)KeyModifier.Ctrl, (uint)VirtualKey.B, Gesture.HotKeyHandler));
+            //DefinedHotKeys.Add(new HotKey(GESTURE_INPUT_ID, (uint)KeyModifier.Ctrl, (uint)VirtualKey.B, HotKeyHandler));
+            //DefinedHotKeys.Add(new HotKey(3, (uint)KeyModifier.Ctrl, (uint)VirtualKey.C, HotKeyHandler));            
         }
 
         protected override void OnClosed(EventArgs e)
@@ -79,10 +75,9 @@ namespace Orbiter
             }
         }
 
-        private void HotkeyHandler(Object sender, HotKeyEventArgs e)
+        private void HotKeyHandler(Object sender, HotKeyEventArgs e)
         {
-            int id = e.id;
-            MessageBox.Show(HotKeyWindow.Instance, "Hello World. " + id);
+            //do shit here
         }
 
         private void ShowEventHandler(object sender, EventArgs e)

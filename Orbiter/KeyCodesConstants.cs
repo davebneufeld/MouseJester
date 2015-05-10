@@ -218,4 +218,9 @@ namespace Orbiter
         PA1 = 0xFD,
         OEMClear = 0xFE
     }
+
+    public static class Constants
+    {
+        public const int GESTURE_INPUT_ID = 1;
+    }
 }
