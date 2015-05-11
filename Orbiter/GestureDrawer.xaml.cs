@@ -155,7 +155,6 @@ namespace Orbiter
                 minX -= deltaDiff / 2;
                 maxX += deltaDiff / 2;
             }
-            Console.WriteLine("hi " + (maxX - minX) + " hi " + (maxY - minY));
 
             mouseDown = false;
             drawnGesture = new Gesture(rawPoints, minX, minY, maxX, maxY);
