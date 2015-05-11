@@ -48,7 +48,7 @@ namespace Orbiter
 
         public HotKey(int id, uint modifiers, uint vk, HotkeyHandlerDelegate HotKeyHandler) : this(id, modifiers, vk)
         {
-            AddHotKeyHandler(HotKeyHandler);
+            HotKeyPressedEvent += HotKeyHandler;
         }
 
         public void Dispose() 
@@ -67,11 +67,6 @@ namespace Orbiter
                 Console.WriteLine("Could not unregister the hotkey.");
             }
             disposed = true;
-        }
-
-        public void AddHotKeyHandler(HotkeyHandlerDelegate HotKeyHandler)
-        {
-            HotKeyPressedEvent += HotKeyHandler;
         }
 
         internal void RaiseHotKeyEvent()

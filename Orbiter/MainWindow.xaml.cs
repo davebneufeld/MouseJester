@@ -50,12 +50,8 @@ namespace Orbiter
             ShowEvent += ShowEventHandler;
             CloseEvent += CloseEventHandler;
 
-            Gesture.hkey = new HotKey(Constants.GESTURE_INPUT_ID, (uint)KeyModifier.Ctrl, (uint)VirtualKey.B, Gesture.HotKeyHandler);
-            DefinedHotKeys.Add(Gesture.hkey);
-
-            //DefinedHotKeys.Add(new HotKey(Constants.GESTURE_INPUT_ID, (uint)KeyModifier.Ctrl, (uint)VirtualKey.B, Gesture.HotKeyHandler));
-            //DefinedHotKeys.Add(new HotKey(GESTURE_INPUT_ID, (uint)KeyModifier.Ctrl, (uint)VirtualKey.B, HotKeyHandler));
-            //DefinedHotKeys.Add(new HotKey(3, (uint)KeyModifier.Ctrl, (uint)VirtualKey.C, HotKeyHandler));            
+            Gesture.hkey = new HotKey(Constants.GESTURE_INPUT_ID, (uint)(KeyModifier.Ctrl), (uint)VirtualKey.B, Gesture.HotKeyHandler);
+            DefinedHotKeys.Add(Gesture.hkey);        
         }
 
         protected override void OnClosed(EventArgs e)
@@ -73,11 +69,6 @@ namespace Orbiter
             {
                 this.Hide();
             }
-        }
-
-        private void HotKeyHandler(Object sender, HotKeyEventArgs e)
-        {
-            //do shit here
         }
 
         private void ShowEventHandler(object sender, EventArgs e)
