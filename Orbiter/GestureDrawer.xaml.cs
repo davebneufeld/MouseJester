@@ -145,16 +145,17 @@ namespace Orbiter
             {
                 sourceDims = originalDeltaX;
                 double deltaDiff = originalDeltaX - originalDeltaY;
-                minY -= deltaDiff / 2 + 1;
-                maxY += deltaDiff / 2 + 1;
+                minY -= deltaDiff / 2;
+                maxY += deltaDiff / 2;
             }
             else
             {
                 sourceDims = originalDeltaY;
                 double deltaDiff = originalDeltaY - originalDeltaX;
-                minX -= deltaDiff / 2 + 1;
-                maxX += deltaDiff / 2 + 1;
+                minX -= deltaDiff / 2;
+                maxX += deltaDiff / 2;
             }
+            Console.WriteLine("hi " + (maxX - minX) + " hi " + (maxY - minY));
 
             mouseDown = false;
             drawnGesture = new Gesture(rawPoints, minX, minY, maxX, maxY);
