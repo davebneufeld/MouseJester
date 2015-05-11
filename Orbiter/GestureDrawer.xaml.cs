@@ -160,7 +160,7 @@ namespace Orbiter
             drawnGesture = new Gesture(rawPoints, minX, minY, maxX, maxY);
             if (drawnGesture != null)
             {
-                KeyValuePair<double, Gesture> matched = Gesture.Recognize(drawnGesture);
+                KeyValuePair<double, Gesture> matched = GestureManager.Instance.Recognize(drawnGesture);
                 double matchAccuracy = matched.Key;
                 Gesture closestMatch = matchAccuracy > Constants.MATCH_THRESHOLD? matched.Value : null;
 

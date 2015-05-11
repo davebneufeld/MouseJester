@@ -6,74 +6,20 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 
+
 namespace Orbiter
 {
     public class Gesture
     {
-        public static List<Gesture> currGestures = new List<Gesture>();
-        public static HotKey _hkey = null;
-        public static HotKey hkey
+        private string _Name;
+        public string Name
         {
             get
             {
-                return _hkey;
-            }
-            set
-            {
-                if(_hkey != null)
-                {
-                    _hkey.Dispose();
-                }
-                _hkey = value;
+                return _Name;
             }
         }
 
-        public static void HotKeyHandler(Object sender, HotKeyEventArgs e)
-        {
-            if (e.id == Constants.GESTURE_INPUT_ID)
-            {
-                GestureDrawer gDrawer = inputGesture(true);
-                if(gDrawer != null)
-                {
-                    Gesture gMatched = gDrawer.matchedGesture;
-                    if (gMatched != null)
-                    {
-                        gMatched.Execute();
-                    }
-                }
-            }
-        }
-
-        public static GestureDrawer inputGesture(bool isMatching /*as opposed to defining*/)
-        {
-            GestureDrawer drawer = new GestureDrawer(Brushes.LightSteelBlue, Brushes.Black, true, isMatching, true);
-            if (drawer.DialogResult == true)
-            {
-                return drawer;
-            }
-            else
-            {
-                return null;
-            }
-
-        }
-
-        public static void SaveGestures()
-        {
-
-        }
-
-        public static void LoadGestures()
-        {
-
-        }
-
-        public static KeyValuePair<double, Gesture> Recognize(Gesture g)
-        {
-            return new KeyValuePair<double,Gesture>(1, g);
-        }
-
-        //instanced stuff
         private List<Point> _PointVector;
         public List<Point> PointVector
         {
@@ -85,12 +31,14 @@ namespace Orbiter
 
         public Gesture(Gesture other)
         {
+            this._Name = null;
             this._PointVector = new List<Point>(other.PointVector);
         }
 
         public Gesture(List<Point> rawPoints)
         {
-            _PointVector = new List<Point>();
+            this._Name = null;
+            this._PointVector = new List<Point>();
             double minX = Double.MaxValue, minY = Double.MaxValue, maxX = Double.MinValue, maxY = Double.MinValue;
             foreach (Point p in rawPoints)
             {
@@ -99,11 +47,32 @@ namespace Orbiter
                 maxX = Math.Max(maxX, p.X);
                 maxY = Math.Max(maxY, p.Y);
             }
+
+            double sourceDims = 0;
+            double originalDeltaX = maxX - minX;
+            double originalDeltaY = maxY - minY;
+
+            if (originalDeltaX >= originalDeltaY)
+            {
+                sourceDims = originalDeltaX;
+                double deltaDiff = originalDeltaX - originalDeltaY;
+                minY -= deltaDiff / 2;
+                maxY += deltaDiff / 2;
+            }
+            else
+            {
+                sourceDims = originalDeltaY;
+                double deltaDiff = originalDeltaY - originalDeltaX;
+                minX -= deltaDiff / 2;
+                maxX += deltaDiff / 2;
+            }
+
             scaleAndCenterGesture(rawPoints, minX, minY, maxX, maxY);
         }
 
         public Gesture(List<Point> rawPoints, double minX, double minY, double maxX, double maxY)
         {
+            this._Name = null;
             _PointVector = new List<Point>();
             scaleAndCenterGesture(rawPoints, minX, minY, maxX, maxY);
         }
@@ -133,6 +102,12 @@ namespace Orbiter
                     _PointVector.Add(new Point(scaleFactorX * (scaledPoint.X - minX), scaleFactorY * (scaledPoint.Y - minY)));
                 }
             }
+        }
+
+        public void Register(string Name)
+        {
+            this._Name = Name;
+            GestureManager.Instance.Add(this);
         }
 
         public void Execute()

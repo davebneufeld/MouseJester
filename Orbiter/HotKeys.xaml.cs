@@ -92,18 +92,18 @@ namespace Orbiter
 
     public partial class HotKeyWindow : Window
     {
-        private static HotKeyWindow _instance = null;
+        private static HotKeyWindow _Instance = null;
         private static List<HotKey> registeredKeys = new List<HotKey>();
 
         public static HotKeyWindow Instance
         {
             get
             {
-                if (_instance == null)
+                if (_Instance == null)
                 {
-                    _instance = new HotKeyWindow();
+                    _Instance = new HotKeyWindow();
                 }
-                return _instance;
+                return _Instance;
             }
         }
 

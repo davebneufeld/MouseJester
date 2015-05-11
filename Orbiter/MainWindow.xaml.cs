@@ -50,8 +50,8 @@ namespace Orbiter
             ShowEvent += ShowEventHandler;
             CloseEvent += CloseEventHandler;
 
-            Gesture.hkey = new HotKey(Constants.GESTURE_INPUT_ID, (uint)(KeyModifier.Ctrl), (uint)VirtualKey.B, Gesture.HotKeyHandler);
-            DefinedHotKeys.Add(Gesture.hkey);        
+            GestureManager.Instance.hkey = new HotKey(Constants.GESTURE_INPUT_ID, (uint)(KeyModifier.Ctrl), (uint)VirtualKey.B, GestureManager.Instance.HotKeyHandler);
+            DefinedHotKeys.Add(GestureManager.Instance.hkey);        
         }
 
         protected override void OnClosed(EventArgs e)
