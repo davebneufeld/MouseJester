@@ -55,27 +55,34 @@ namespace Orbiter
             }
         }
 
+        public const string GESTURES_TAG = "GESTURES";
+        public const string GESTURE_TAG = "GESTURE";
+        public const string NAME_TAG = "NAME";
+        public const string DATA_TAG = "DATA";
+        public const string ACTIONS_TAG = "ACTIONS";
+        public const string ACTION_TAG = "ACTION";
+
         private GestureManager()
         {
             GestureCollection = new List<Gesture>();
             GestureFileName = "gestures";
         }
 
-        public void SaveGestures()
+        public void Save()
         {
             XmlWriter xmlWriter = XmlWriter.Create(GestureFileName);
             xmlWriter.WriteStartDocument();
-            xmlWriter.WriteStartElement("GESTURE");
+            xmlWriter.WriteStartElement(GESTURES_TAG);
 
             foreach (Gesture g in GestureCollection)
             {
-                xmlWriter.WriteStartElement("GESTURE");
+                xmlWriter.WriteStartElement(GESTURE_TAG);
                 {
-                    xmlWriter.WriteStartElement("NAME");
+                    xmlWriter.WriteStartElement(NAME_TAG);
                     xmlWriter.WriteString(g.Name);
                     xmlWriter.WriteEndElement();
 
-                    xmlWriter.WriteStartElement("DATA");
+                    xmlWriter.WriteStartElement(DATA_TAG);
                     foreach (Point p in g.PointVector)
                     {
                         xmlWriter.WriteBase64(BitConverter.GetBytes(p.X), 0, 8);
@@ -83,7 +90,7 @@ namespace Orbiter
                     }
                     xmlWriter.WriteEndElement();
 
-                    xmlWriter.WriteStartElement("ACTIONS");
+                    xmlWriter.WriteStartElement(ACTIONS_TAG);
                     xmlWriter.WriteString("404");
                     xmlWriter.WriteEndElement();
                 }
@@ -104,13 +111,13 @@ namespace Orbiter
             {
                 if (reader.NodeType == XmlNodeType.Element)
                 {
-                    if (reader.Name == "NAME")
+                    if (reader.Name == NAME_TAG)
                     {
                         reader.Read(); //read value node
                         Name = reader.Value;
                         reader.Read(); //read end tag
                     }
-                    else if (reader.Name == "DATA")
+                    else if (reader.Name == DATA_TAG)
                     {
                         //space for two doubles: x, y
                         byte[] dataBuffer = new byte[16];
@@ -124,7 +131,7 @@ namespace Orbiter
                             gesturePoints.Add(new Point(x, y));
                         }
                     }
-                    else if (reader.Name == "ACTIONS")
+                    else if (reader.Name == ACTIONS_TAG)
                     {
                         reader.Read(); //read value node
                         reader.Read(); //read end tag
@@ -138,7 +145,7 @@ namespace Orbiter
             }
         }
 
-        public void LoadGestures()
+        public void Load()
         {
             Clear();
 
@@ -148,7 +155,7 @@ namespace Orbiter
                 {
                     if (reader.NodeType == XmlNodeType.Element)
                     {
-                        if (reader.Name == "GESTURE")
+                        if (reader.Name == GESTURE_TAG)
                         {
                             LoadGesture(reader);
                         }
@@ -175,7 +182,7 @@ namespace Orbiter
         {
             if (e.id == Constants.GESTURE_INPUT_ID)
             {
-                GestureDrawer gDrawer = inputGesture(true);
+                GestureCanvas gDrawer = inputGesture(true);
                 if (gDrawer != null)
                 {
                     Gesture gMatched = gDrawer.matchedGesture;
@@ -187,9 +194,9 @@ namespace Orbiter
             }
         }
 
-        public GestureDrawer inputGesture(bool isMatching /*as opposed to defining*/)
+        public GestureCanvas inputGesture(bool isMatching /*as opposed to defining*/)
         {
-            GestureDrawer drawer = new GestureDrawer(Brushes.LightSteelBlue, Brushes.Black, true, isMatching, true);
+            GestureCanvas drawer = new GestureCanvas(Brushes.LightSteelBlue, Brushes.Black, true, isMatching, true);
             if (drawer.DialogResult == true)
             {
                 return drawer;

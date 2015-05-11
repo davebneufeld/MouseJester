@@ -29,6 +29,15 @@ namespace Orbiter
             }
         }
 
+        private List<Double> _Directions;
+        public List<Double> Directions
+        {
+            get
+            {
+                return _Directions;
+            }
+        }
+
         public Gesture(Gesture other)
         {
             this._Name = null;
@@ -101,6 +110,18 @@ namespace Orbiter
                     Point scaledPoint = new Point(lowerPoint.X + interpolationFactor * (upperPoint.X - lowerPoint.X), lowerPoint.Y + interpolationFactor * (upperPoint.Y - lowerPoint.Y));
                     _PointVector.Add(new Point(scaleFactorX * (scaledPoint.X - minX), scaleFactorY * (scaledPoint.Y - minY)));
                 }
+            }
+        }
+
+        public void calcDirections()
+        {
+            if (PointVector.Count == 0) return;
+
+            Point prevPoint = PointVector[0];
+            for (int i = 1; i < PointVector.Count; i++)
+            {
+                Point curPoint = PointVector[i];
+                _Directions.Add(Math.Atan2(curPoint.Y - prevPoint.Y, curPoint.X - prevPoint.X));
             }
         }
 

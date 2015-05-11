@@ -16,7 +16,7 @@ using System.ComponentModel;
 
 namespace Orbiter
 {
-    public partial class GestureDrawer : Window
+    public partial class GestureCanvas : Window
     {
         private bool mouseDown = false;
         private Point prevPos = new Point(-1, -1);
@@ -34,7 +34,7 @@ namespace Orbiter
         public Gesture drawnGesture = null;
         public Gesture matchedGesture = null;
 
-        public GestureDrawer(Brush drawColor, Brush outlineColor, bool drawOutline, bool isMatching /*as opposed to defining a gesture*/, bool displayPreview)
+        public GestureCanvas(Brush drawColor, Brush outlineColor, bool drawOutline, bool isMatching /*as opposed to defining a gesture*/, bool displayPreview)
             : base()
         {
             InitializeComponent();

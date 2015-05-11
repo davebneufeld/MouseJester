@@ -51,6 +51,7 @@ namespace Orbiter
             CloseEvent += CloseEventHandler;
 
             GestureManager.Instance.hkey = new HotKey(Constants.GESTURE_INPUT_ID, (uint)(KeyModifier.Ctrl), (uint)VirtualKey.B, GestureManager.Instance.HotKeyHandler);
+            GestureManager.Instance.Load();
             DefinedHotKeys.Add(GestureManager.Instance.hkey);        
         }
 

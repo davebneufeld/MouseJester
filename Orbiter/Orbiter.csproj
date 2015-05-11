@@ -59,8 +59,8 @@
     <Compile Include="Commands.cs" />
     <Compile Include="HotKey.cs" />
     <Compile Include="KeyCodesConstants.cs" />
-    <Compile Include="GestureDrawer.xaml.cs">
-      <DependentUpon>GestureDrawer.xaml</DependentUpon>
+    <Compile Include="GestureCanvas.xaml.cs">
+      <DependentUpon>GestureCanvas.xaml</DependentUpon>
     </Compile>
     <Compile Include="HotKeyWindow.xaml.cs">
       <DependentUpon>HotKeyWindow.xaml</DependentUpon>
@@ -78,7 +78,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="GestureDrawer.xaml">
+    <Page Include="GestureCanvas.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
