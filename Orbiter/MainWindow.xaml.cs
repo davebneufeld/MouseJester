@@ -57,6 +57,7 @@ namespace Orbiter
 
         protected override void OnClosed(EventArgs e)
         {
+            GestureManager.Instance.Save();
             base.OnClosed(e);
             foreach (HotKey hkey in DefinedHotKeys)
             {

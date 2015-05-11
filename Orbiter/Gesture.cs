@@ -78,7 +78,7 @@ namespace Orbiter
                 maxX += deltaDiff / 2;
             }
 
-            scaleAndCenterGesture(rawPoints, minX, minY, maxX, maxY);
+            this.scaleAndCenterGesture(rawPoints, minX, minY, maxX, maxY);
         }
 
         public Gesture(List<Point> rawPoints, double minX, double minY, double maxX, double maxY)
@@ -86,7 +86,7 @@ namespace Orbiter
             this._Name = null;
             this._PointVector = new List<Point>();
             this._Directions = new List<double>();
-            scaleAndCenterGesture(rawPoints, minX, minY, maxX, maxY);
+            this.scaleAndCenterGesture(rawPoints, minX, minY, maxX, maxY);
         }
 
         public void scaleAndCenterGesture(List<Point> rawPoints, double minX, double minY, double maxX, double maxY)
@@ -114,6 +114,7 @@ namespace Orbiter
                     _PointVector.Add(new Point(scaleFactorX * (scaledPoint.X - minX), scaleFactorY * (scaledPoint.Y - minY)));
                 }
             }
+            calcDirections();
         }
 
         public void calcDirections()
@@ -124,7 +125,8 @@ namespace Orbiter
             for (int i = 1; i < PointVector.Count; i++)
             {
                 Point curPoint = PointVector[i];
-                _Directions.Add(Math.Atan2(curPoint.Y - prevPoint.Y, curPoint.X - prevPoint.X));
+                //normalize resulting direction angle to [0,1]
+                _Directions.Add(Math.Atan2(curPoint.Y - prevPoint.Y, curPoint.X - prevPoint.X) / (2 * Math.PI) + 1);
             }
         }
 
@@ -134,14 +136,15 @@ namespace Orbiter
             GestureManager.Instance.Add(this);
         }
 
-        public void Execute()
-        {
-
-        }
-
         public void SetAction()
         {
 
         }
+
+        public void ExecuteAction()
+        {
+
+        }
+
     }
 }

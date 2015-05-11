@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Windows;
 using System.Windows.Media;
+using System.IO;
 
 namespace Orbiter
 {
@@ -141,22 +142,28 @@ namespace Orbiter
         public void Load()
         {
             Clear();
-            using (XmlReader reader = XmlReader.Create(GestureFileName))
+            try
             {
-                while (reader.Read())
+                using (XmlReader reader = XmlReader.Create(GestureFileName))
                 {
-                    if (reader.NodeType == XmlNodeType.Element)
+                    while (reader.Read())
                     {
-                        if (reader.Name == Constants.GESTURE_TAG)
+                        if (reader.NodeType == XmlNodeType.Element)
                         {
-                            LoadGesture(reader);
+                            if (reader.Name == Constants.GESTURE_TAG)
+                            {
+                                LoadGesture(reader);
+                            }
+                        }
+                        else if (reader.NodeType == XmlNodeType.EndElement)
+                        {
+                            break;
                         }
                     }
-                    else if (reader.NodeType == XmlNodeType.EndElement)
-                    {
-                        break;
-                    }
                 }
+            }
+            catch (FileNotFoundException e) {
+                //fail silently
             }
         }
 
@@ -180,7 +187,7 @@ namespace Orbiter
                     Gesture gMatched = gDrawer.matchedGesture;
                     if (gMatched != null)
                     {
-                        gMatched.Execute();
+                        gMatched.ExecuteAction();
                     }
                 }
             }
@@ -199,9 +206,30 @@ namespace Orbiter
             }
         }
 
-        public KeyValuePair<double, Gesture> Recognize(Gesture g)
+        //simple least squares error returns value in [0,1]
+        public double PerformMatch(Gesture input, Gesture definedGesture)
         {
-            return new KeyValuePair<double, Gesture>(1, g);
+            double weight = 1 / (Constants.GESTURE_POINTS - 1);
+            double matchError = 0;
+            for (int i = 0; i < Constants.GESTURE_POINTS - 1; i++)
+            {
+                matchError += weight * Math.Pow((input.Directions[i] - definedGesture.Directions[i]), 2);
+            }
+            return matchError;
+        }
+
+        public KeyValuePair<double, Gesture> Recognize(Gesture input)
+        {
+            KeyValuePair<double, Gesture> bestMatch = new KeyValuePair<double, Gesture>(1, null);
+            foreach(Gesture definedGesture in GestureCollection)
+            {
+                double matchError = PerformMatch(input, definedGesture);
+                if (matchError < bestMatch.Key)
+                {
+                    bestMatch = new KeyValuePair<double, Gesture>(matchError, definedGesture);
+                }
+            }
+            return bestMatch;
         }
     }
 }
