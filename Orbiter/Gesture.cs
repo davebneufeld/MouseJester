@@ -120,8 +120,8 @@ namespace Orbiter
             else
             {
                 //double sourceDims = Math.Max(maxX - minX, maxY - minY); TODO:
-                double scaleFactorX = Constants.GESTURE_WIDTH / (maxX - minX);
-                double scaleFactorY = Constants.GESTURE_HEIGHT / (maxY - minY);
+                double scaleFactorX = Constants.GESTURE_WIDTH / (maxX - minX + 1);
+                double scaleFactorY = Constants.GESTURE_HEIGHT / (maxY - minY + 1);
                 double indexScaleFactor = (double)(rawPoints.Count - 1) / Constants.GESTURE_POINTS;
                 _PointVector.Clear();
                 for (int i = 0; i < Constants.GESTURE_POINTS; i++)

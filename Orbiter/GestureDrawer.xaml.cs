@@ -72,7 +72,14 @@ namespace Orbiter
 
         private void DrawGesture(Gesture g, Brush drawColor, Brush outlineColor, bool drawOutline)
         {
-            DrawVector(g.PointVector, drawColor, outlineColor, drawOutline);
+            List<Point> scaledPoints = new List<Point>();
+            double scaleFactorX = (maxX - minX) / Constants.GESTURE_WIDTH;
+            double scaleFactorY = (maxY - minY) / Constants.GESTURE_HEIGHT;
+            foreach(Point p in g.PointVector)
+            {
+                scaledPoints.Add(new Point(minX + scaleFactorX * p.X, minY + scaleFactorY * p.Y));
+            }
+            DrawVector(scaledPoints, drawColor, outlineColor, drawOutline);
         }
 
         private void DrawVector(List<Point> points, Brush drawColor, Brush outlineColor, bool drawOutline)
