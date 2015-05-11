@@ -57,12 +57,13 @@
     </ApplicationDefinition>
     <Compile Include="GestureManager.cs" />
     <Compile Include="Commands.cs" />
+    <Compile Include="HotKey.cs" />
     <Compile Include="KeyCodesConstants.cs" />
     <Compile Include="GestureDrawer.xaml.cs">
       <DependentUpon>GestureDrawer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="HotKeys.xaml.cs">
-      <DependentUpon>HotKeys.xaml</DependentUpon>
+    <Compile Include="HotKeyWindow.xaml.cs">
+      <DependentUpon>HotKeyWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -81,7 +82,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="HotKeys.xaml">
+    <Page Include="HotKeyWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
