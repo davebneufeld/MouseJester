@@ -119,9 +119,28 @@ namespace Orbiter
             }
             else
             {
-                //double sourceDims = Math.Max(maxX - minX, maxY - minY); TODO:
-                double scaleFactorX = Constants.GESTURE_WIDTH / (maxX - minX + 1);
-                double scaleFactorY = Constants.GESTURE_HEIGHT / (maxY - minY + 1);
+                /*
+                double sourceDims = 0;
+                double originalDeltaX = maxX - minX;
+                double originalDeltaY = maxY - minY;
+
+                if (originalDeltaX >= originalDeltaY)
+                {
+                    sourceDims = originalDeltaX;
+                    double deltaDiff = originalDeltaX - originalDeltaY;
+                    minY -= deltaDiff / 2 + 1;
+                    maxY += deltaDiff / 2 + 1;
+                } 
+                else
+                {
+                    sourceDims = originalDeltaY;
+                    double deltaDiff = originalDeltaY - originalDeltaX;
+                    minX -= deltaDiff / 2;
+                    maxX += deltaDiff / 2;
+                }*/
+
+                double scaleFactorX = Constants.GESTURE_WIDTH / (maxX - minX);
+                double scaleFactorY = Constants.GESTURE_HEIGHT / (maxY - minY);
                 double indexScaleFactor = (double)(rawPoints.Count - 1) / Constants.GESTURE_POINTS;
                 _PointVector.Clear();
                 for (int i = 0; i < Constants.GESTURE_POINTS; i++)

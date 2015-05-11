@@ -137,6 +137,25 @@ namespace Orbiter
 
         private void processGesture(object sender, DoWorkEventArgs e)
         {
+            double sourceDims = 0;
+            double originalDeltaX = maxX - minX;
+            double originalDeltaY = maxY - minY;
+
+            if (originalDeltaX >= originalDeltaY)
+            {
+                sourceDims = originalDeltaX;
+                double deltaDiff = originalDeltaX - originalDeltaY;
+                minY -= deltaDiff / 2 + 1;
+                maxY += deltaDiff / 2 + 1;
+            }
+            else
+            {
+                sourceDims = originalDeltaY;
+                double deltaDiff = originalDeltaY - originalDeltaX;
+                minX -= deltaDiff / 2 + 1;
+                maxX += deltaDiff / 2 + 1;
+            }
+
             mouseDown = false;
             drawnGesture = new Gesture(rawPoints, minX, minY, maxX, maxY);
             if (drawnGesture != null)
