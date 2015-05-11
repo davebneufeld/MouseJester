@@ -227,5 +227,13 @@ namespace Orbiter
         public const double GESTURE_HEIGHT = 1000;
         public const int GESTURE_POINTS = 400;
         public const int MIN_LINE_LEN = 5;
+
+        //xml tags
+        public const string GESTURES_TAG = "GESTURES";
+        public const string GESTURE_TAG = "GESTURE";
+        public const string NAME_TAG = "NAME";
+        public const string DATA_TAG = "DATA";
+        public const string ACTIONS_TAG = "ACTIONS";
+        public const string ACTION_TAG = "ACTION";
     }
 }

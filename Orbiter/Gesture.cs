@@ -29,8 +29,8 @@ namespace Orbiter
             }
         }
 
-        private List<Double> _Directions;
-        public List<Double> Directions
+        private List<double> _Directions;
+        public List<double> Directions
         {
             get
             {
@@ -42,12 +42,14 @@ namespace Orbiter
         {
             this._Name = null;
             this._PointVector = new List<Point>(other.PointVector);
+            this._Directions = new List<double>(other.Directions);
         }
 
         public Gesture(List<Point> rawPoints)
         {
             this._Name = null;
             this._PointVector = new List<Point>();
+            this._Directions = new List<double>();
             double minX = Double.MaxValue, minY = Double.MaxValue, maxX = Double.MinValue, maxY = Double.MinValue;
             foreach (Point p in rawPoints)
             {
@@ -82,7 +84,8 @@ namespace Orbiter
         public Gesture(List<Point> rawPoints, double minX, double minY, double maxX, double maxY)
         {
             this._Name = null;
-            _PointVector = new List<Point>();
+            this._PointVector = new List<Point>();
+            this._Directions = new List<double>();
             scaleAndCenterGesture(rawPoints, minX, minY, maxX, maxY);
         }
 
