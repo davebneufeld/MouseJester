@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
 
-namespace Orbiter
+namespace Gestr
 {
     public class HotKeyEventArgs : EventArgs
     {

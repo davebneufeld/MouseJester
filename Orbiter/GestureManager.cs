@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.IO;
 
-namespace Orbiter
+namespace Gestr
 {
     public class GestureManager
     {
