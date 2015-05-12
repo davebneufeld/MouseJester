@@ -207,22 +207,6 @@ namespace MouseJester
             }
         }
 
-        //simple least squares error returns value in [0,1]
-        public double PerformMatch(Gesture input, Gesture definedGesture)
-        {
-            double weight = 1.0 / (Constants.GESTURE_POINTS - 1);
-            double matchError = 0;
-            for (int i = 0; i < Constants.GESTURE_POINTS - 1; i++)
-            {
-                double distance = input.Directions[i] - definedGesture.Directions[i];
-
-                //account for the periodic nature of angles
-                distance = distance > 0.5? 1 - distance : distance;
-                matchError += weight * Math.Pow(distance, 2);
-            }
-            return matchError;
-        }
-
         public KeyValuePair<double, Gesture> Recognize(Gesture input)
         {
             KeyValuePair<double, Gesture> bestMatch = new KeyValuePair<double, Gesture>(1, null);
@@ -235,6 +219,22 @@ namespace MouseJester
                 }
             }
             return bestMatch;
+        }
+
+        //simple least squares error returns value in [0,1]
+        private double PerformMatch(Gesture input, Gesture definedGesture)
+        {
+            double weight = 1.0 / (Constants.GESTURE_POINTS - 1);
+            double matchError = 0;
+            for (int i = 0; i < Constants.GESTURE_POINTS - 1; i++)
+            {
+                double distance = input.Directions[i] - definedGesture.Directions[i];
+
+                //account for the periodic nature of angles
+                distance = distance > 0.5 ? 1 - distance : distance;
+                matchError += weight * Math.Pow(distance, 2);
+            }
+            return matchError;
         }
     }
 }

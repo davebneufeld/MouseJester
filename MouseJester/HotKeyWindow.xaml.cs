@@ -40,8 +40,6 @@ namespace MouseJester
             Show();
         }
 
-        const int WM_HOTKEY = 0x0312;
-
         protected override void OnSourceInitialized(EventArgs e)
         {
             base.OnSourceInitialized(e);
@@ -51,23 +49,21 @@ namespace MouseJester
 
         private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
-            switch (msg)
+            if(msg == Constants.WM_HOTKEY)
             {
-                case WM_HOTKEY:
-                    //check hotkey register ID
-                    int id = wParam.ToInt32();
+                //check hotkey register ID
+                int id = wParam.ToInt32();
 
-                    //raise the event with the hotkey ID
-                    foreach (HotKey hkey in registeredKeys)
+                //raise the event with the hotkey ID
+                foreach (HotKey hkey in registeredKeys)
+                {
+                    if (hkey.id == id)
                     {
-                        if (hkey.id == id)
-                        {
-                            hkey.RaiseHotKeyEvent();
-                        }
+                        hkey.RaiseHotKeyEvent();
                     }
+                }
 
-                    handled = true;
-                    break;
+                handled = true;
             }
             return IntPtr.Zero;
         }

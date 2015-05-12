@@ -21,7 +21,7 @@ namespace MouseJester
             Exit += App_Exit;
         }
 
-        void App_Startup(object sender, StartupEventArgs e)
+        private void App_Startup(object sender, StartupEventArgs e)
         {
             singleInstanceLock = new Mutex(false, "Global\\" + Constants.APP_GUID);
             if (!singleInstanceLock.WaitOne(0, false))
@@ -35,7 +35,7 @@ namespace MouseJester
             }
         }
 
-        void App_Exit(object sender, ExitEventArgs e)
+        private void App_Exit(object sender, ExitEventArgs e)
         {
             GestureManager.Instance.Save();
             singleInstanceLock.Close();

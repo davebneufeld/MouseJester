@@ -8,33 +8,33 @@ using System.Windows;
 
 namespace MouseJester
 {
-    public class ShowCommand : ICommand
+    internal class ShowCommand : ICommand
     {
-        public void Execute(object parameter)
+        internal void Execute(object parameter)
         {
             MainWindow.Instance.ExecuteShowEvent();
         }
 
-        public bool CanExecute(object parameter)
+        internal bool CanExecute(object parameter)
         {
             return true;
         }
 
-        public event EventHandler CanExecuteChanged;
+        internal event EventHandler CanExecuteChanged;
     }
 
-    public class CloseCommand : ICommand
+    internal class CloseCommand : ICommand
     {
-        public void Execute(object parameter)
+        internal void Execute(object parameter)
         {
             MainWindow.Instance.ExecuteCloseEvent();
         }
 
-        public bool CanExecute(object parameter)
+        internal bool CanExecute(object parameter)
         {
             return true;
         }
 
-        public event EventHandler CanExecuteChanged;
+        internal event EventHandler CanExecuteChanged;
     }
 }

@@ -65,7 +65,7 @@
     <Compile Include="GestureManager.cs" />
     <Compile Include="Commands.cs" />
     <Compile Include="HotKey.cs" />
-    <Compile Include="KeyCodesConstants.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="GestureCanvas.xaml.cs">
       <DependentUpon>GestureCanvas.xaml</DependentUpon>
     </Compile>

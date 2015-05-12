@@ -45,7 +45,7 @@ namespace MouseJester
             ShowEvent += ShowEventHandler;
             CloseEvent += CloseEventHandler;
 
-            GestureManager.Instance.hkey = new HotKey(Constants.GESTURE_INPUT_ID, (uint)(KeyModifier.Ctrl), (uint)VirtualKey.B, GestureManager.Instance.HotKeyHandler);
+            GestureManager.Instance.hkey = new HotKey(Constants.GESTURE_INPUT_ID, (uint)(ModifierKeys.Control), (uint)Key.B, GestureManager.Instance.HotKeyHandler);
             GestureManager.Instance.Load();
             DefinedHotKeys.Add(GestureManager.Instance.hkey);   
         }
@@ -70,20 +70,6 @@ namespace MouseJester
             }
         }
 
-        private void ShowEventHandler(object sender, EventArgs e)
-        {
-            this.Show();
-            if (this.WindowState == WindowState.Minimized)
-            {
-                this.WindowState = WindowState.Normal;
-            }
-        }
-
-        private void CloseEventHandler(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
         public void ExecuteShowEvent()
         {
             EventHandler handler = ShowEvent;
@@ -100,6 +86,20 @@ namespace MouseJester
             {
                 handler(null, new EventArgs());
             }
+        }
+
+        private void ShowEventHandler(object sender, EventArgs e)
+        {
+            this.Show();
+            if (this.WindowState == WindowState.Minimized)
+            {
+                this.WindowState = WindowState.Normal;
+            }
+        }
+
+        private void CloseEventHandler(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

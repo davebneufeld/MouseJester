@@ -47,9 +47,6 @@ namespace MouseJester
 
         public Gesture(List<Point> rawPoints)
         {
-            this._Name = null;
-            this._PointVector = new List<Point>();
-            this._Directions = new List<double>();
             double minX = Double.MaxValue, minY = Double.MaxValue, maxX = Double.MinValue, maxY = Double.MinValue;
             foreach (Point p in rawPoints)
             {
@@ -78,10 +75,15 @@ namespace MouseJester
                 maxX += deltaDiff / 2;
             }
 
-            this.scaleAndCenterGesture(rawPoints, minX, minY, maxX, maxY);
+            Initialize(rawPoints, minX, minY, maxX, maxY);
         }
 
         public Gesture(List<Point> rawPoints, double minX, double minY, double maxX, double maxY)
+        {
+            Initialize(rawPoints, minX, minY, maxX, maxY);
+        }
+
+        private void Initialize(List<Point> rawPoints, double minX, double minY, double maxX, double maxY)
         {
             this._Name = null;
             this._PointVector = new List<Point>();
@@ -89,7 +91,7 @@ namespace MouseJester
             this.scaleAndCenterGesture(rawPoints, minX, minY, maxX, maxY);
         }
 
-        public void scaleAndCenterGesture(List<Point> rawPoints, double minX, double minY, double maxX, double maxY)
+        private void scaleAndCenterGesture(List<Point> rawPoints, double minX, double minY, double maxX, double maxY)
         {
             if (rawPoints.Count < 2)
             {
@@ -117,7 +119,7 @@ namespace MouseJester
             calcDirections();
         }
 
-        public void calcDirections()
+        private void calcDirections()
         {
             if (PointVector.Count == 0) return;
 
