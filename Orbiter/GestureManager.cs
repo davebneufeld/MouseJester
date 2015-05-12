@@ -176,6 +176,10 @@ namespace Orbiter
         {
             GestureCollection.Add(g);
         }
+        public int Count()
+        {
+            return GestureCollection.Count;
+        }
 
         public void HotKeyHandler(Object sender, HotKeyEventArgs e)
         {
@@ -209,11 +213,15 @@ namespace Orbiter
         //simple least squares error returns value in [0,1]
         public double PerformMatch(Gesture input, Gesture definedGesture)
         {
-            double weight = 1 / (Constants.GESTURE_POINTS - 1);
+            double weight = 1.0 / (Constants.GESTURE_POINTS - 1);
             double matchError = 0;
             for (int i = 0; i < Constants.GESTURE_POINTS - 1; i++)
             {
-                matchError += weight * Math.Pow((input.Directions[i] - definedGesture.Directions[i]), 2);
+                double distance = input.Directions[i] - definedGesture.Directions[i];
+
+                //account for the periodic nature of angles
+                distance = distance > 0.5? 1 - distance : distance;
+                matchError += weight * Math.Pow(distance, 2);
             }
             return matchError;
         }

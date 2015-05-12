@@ -225,7 +225,7 @@ namespace Orbiter
         public const double MATCH_THRESHOLD = 1;
         public const double GESTURE_WIDTH = 1000;
         public const double GESTURE_HEIGHT = 1000;
-        public const int GESTURE_POINTS = 400;
+        public const int GESTURE_POINTS = 250;
         public const int MIN_LINE_LEN = 5;
 
         //xml tags

@@ -159,6 +159,9 @@ namespace Orbiter
             mouseDown = false;
             drawnGesture = new Gesture(rawPoints, minX, minY, maxX, maxY);
             if (drawnGesture != null)
+            //DEBUG
+            //drawnGesture.Register("hero" + GestureManager.Instance.Count());
+            //if (false)
             {
                 KeyValuePair<double, Gesture> matched = GestureManager.Instance.Recognize(drawnGesture);
                 double matchError = matched.Key;
