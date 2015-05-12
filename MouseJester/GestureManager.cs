@@ -162,7 +162,7 @@ namespace MouseJester
                     }
                 }
             }
-            catch (FileNotFoundException e) {
+            catch (FileNotFoundException) {
                 //fail silently
             }
         }
