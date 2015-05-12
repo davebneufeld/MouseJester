@@ -218,8 +218,6 @@ namespace MouseJester
                     bestMatch = new KeyValuePair<double, Gesture>(matchError, definedGesture);
                 }
             }
-            //DEBUG
-            Console.WriteLine();
             return bestMatch;
         }
 
@@ -236,8 +234,6 @@ namespace MouseJester
                 distance = distance > 1 ? 2 - distance : distance;
                 matchError += weight * Math.Pow(distance, 2);
             }
-            //DEBUG
-            Console.WriteLine(matchError);
             return matchError;
         }
     }
