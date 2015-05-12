@@ -86,5 +86,17 @@ namespace MouseJester
         {
             this.Close();
         }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            if (HotKeyWindow.RegisteredKeys != null)
+            {
+                foreach (HotKey hkey in HotKeyWindow.RegisteredKeys)
+                {
+                    hkey.Dispose();
+                }
+            }
+            base.OnClosed(e);
+        }
     }
 }

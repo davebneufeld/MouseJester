@@ -24,11 +24,11 @@ namespace MouseJester
     public class HotKey : IDisposable
     {
         // Registers a hot key with Windows.
-        [DllImport("user32.dll")]
+        [DllImport("user32.dll", SetLastError = true)]
         private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
 
         // Unregisters the hot key with Windows.
-        [DllImport("user32.dll")]
+        [DllImport("user32.dll", SetLastError=true)]
         private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
         public event HotkeyHandlerDelegate HotKeyPressedEvent;
@@ -58,7 +58,7 @@ namespace MouseJester
             hWnd = (new WindowInteropHelper(HotKeyWindow.Instance)).Handle;
             if (!RegisterHotKey(hWnd, id, modifiers, vk))
             {
-                MessageBox.Show(HotKeyWindow.Instance, "Failed to register hotkey with ID: " + id);
+                MessageBox.Show("Failed to register hotkey with ID: " + id + " with error = " + Marshal.GetLastWin32Error());
                 return;
             }
             HotKeyWindow.RegisterHotKey(this);
@@ -84,7 +84,7 @@ namespace MouseJester
 
             if (!UnregisterHotKey(hWnd, id))
             {
-                MessageBox.Show("Could not unregister the hotkey.");
+                MessageBox.Show("Could not unregister the hotkey. Error = " + Marshal.GetLastWin32Error());
             }
             disposed = true;
         }

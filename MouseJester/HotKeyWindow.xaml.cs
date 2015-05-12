@@ -47,18 +47,6 @@ namespace MouseJester
             source.AddHook(WndProc);
         }
 
-        protected override void OnClosed(EventArgs e)
-        {
-            if (RegisteredKeys != null)
-            {
-                foreach (HotKey hkey in RegisteredKeys)
-                {
-                    hkey.Dispose();
-                }
-            }
-            base.OnClosed(e);
-        }
-
         private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             if(msg == Constants.WM_HOTKEY)
