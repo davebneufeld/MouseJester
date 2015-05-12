@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="GestureDrawer" WindowState="Maximized" WindowStyle="None" ResizeMode="NoResize"
         ShowInTaskbar="False" ShowActivated="True" Background="#30FFFFFF" AllowsTransparency="True"
+        Topmost = "true"
         MouseMove="MouseMoveEventHandler" MouseDown="MouseDownEventHandler" MouseUp="MouseUpEventHandler"
         KeyDown="KeyDownEventHandler">
     <Grid Name="drawingGrid">

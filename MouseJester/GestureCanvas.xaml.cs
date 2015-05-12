@@ -51,6 +51,8 @@ namespace MouseJester
             this.matchedGesture = null;
             GestureManager.Instance.hkey.Disabled = true;
             ShowDialog();
+            this.Activate();
+            this.Focus();  
         }
 
         private void DrawLine(Point prevPos, Point pos, Brush brushColor, Brush outlineColor, bool drawOutline)
