@@ -228,7 +228,7 @@ namespace MouseJester
             double matchError = 0;
             for (int i = 0; i < Constants.GESTURE_POINTS - 1; i++)
             {
-                double distance = input.Directions[i] - definedGesture.Directions[i];
+                double distance = Math.Abs(input.Directions[i] - definedGesture.Directions[i]);
 
                 //account for the periodic nature of angles
                 distance = distance > 0.5 ? 1 - distance : distance;
