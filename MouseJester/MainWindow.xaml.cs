@@ -52,8 +52,6 @@ namespace MouseJester
 
         protected override void OnClosed(EventArgs e)
         {
-            GestureManager.Instance.Save();
-            
             if(DefinedHotKeys != null)
             {
                 foreach (HotKey hkey in DefinedHotKeys)

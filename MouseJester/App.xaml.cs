@@ -18,6 +18,7 @@ namespace MouseJester
         public App()
         {
             Startup += App_Startup;
+            Exit += App_Exit;
         }
 
         void App_Startup(object sender, StartupEventArgs e)
@@ -32,6 +33,12 @@ namespace MouseJester
             {
                 MouseJester.MainWindow.Instance.Show();
             }
+        }
+
+        void App_Exit(object sender, ExitEventArgs e)
+        {
+            GestureManager.Instance.Save();
+            singleInstanceLock.Close();
         }
     }
 }
