@@ -25,19 +25,7 @@ namespace MouseJester
             }
         }
 
-        private List<Gesture> GestureCollection;
-        private string _GestureFileName;
-        public string GestureFileName
-        {
-            get
-            {
-                return _GestureFileName;
-            }
-            set
-            {
-                _GestureFileName = value;
-            }
-        }
+        public List<Gesture> GestureCollection;
 
         private HotKey _hkey = null;
         public HotKey hkey
@@ -59,16 +47,20 @@ namespace MouseJester
         private GestureManager()
         {
             GestureCollection = new List<Gesture>();
-            GestureFileName = "gestures";
         }
 
         public void Save()
         {
-            XmlWriter xmlWriter = XmlWriter.Create(GestureFileName);
+            Save(Constants.GESTURE_FILE_NAME, GestureCollection);
+        }
+
+        public void Save(string fileName, List<Gesture> gestures)
+        {
+            XmlWriter xmlWriter = XmlWriter.Create(fileName);
             xmlWriter.WriteStartDocument();
             xmlWriter.WriteStartElement(Constants.GESTURES_TAG);
 
-            foreach (Gesture g in GestureCollection)
+            foreach (Gesture g in gestures)
             {
                 xmlWriter.WriteStartElement(Constants.GESTURE_TAG);
                 {
@@ -141,10 +133,15 @@ namespace MouseJester
 
         public void Load()
         {
+            Load(Constants.GESTURE_FILE_NAME);
+        }
+
+        public void Load(string fileName)
+        {
             Clear();
             try
             {
-                using (XmlReader reader = XmlReader.Create(GestureFileName))
+                using (XmlReader reader = XmlReader.Create(fileName))
                 {
                     while (reader.Read())
                     {

@@ -33,6 +33,19 @@ namespace MouseJester
 
         public event HotkeyHandlerDelegate HotKeyPressedEvent;
 
+        private bool _Disabled;
+        public bool Disabled
+        {
+            get
+            {
+                return _Disabled;
+            }
+            set
+            {
+                _Disabled = value;
+            }
+        }
+
         public int id;
         private bool disposed = false;
         private IntPtr hWnd;
@@ -40,6 +53,8 @@ namespace MouseJester
         public HotKey(int id, uint modifiers, uint vk)
         {
             this.id = id;
+            this.disposed = false;
+            this._Disabled = false;
             hWnd = (new WindowInteropHelper(HotKeyWindow.Instance)).Handle;
             if (!RegisterHotKey(hWnd, id, modifiers, vk))
             {
@@ -58,6 +73,7 @@ namespace MouseJester
         public void Dispose()
         {
             Dispose(true);
+            _Disabled = true;
             //GC.SuppressFinalize(this);
         }
 
@@ -76,7 +92,7 @@ namespace MouseJester
         internal void RaiseHotKeyEvent()
         {
             HotkeyHandlerDelegate handler = HotKeyPressedEvent;
-            if (handler != null)
+            if (handler != null && !Disabled)
             {
                 handler(this, new HotKeyEventArgs(id));
             }

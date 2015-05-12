@@ -235,5 +235,7 @@ namespace MouseJester
         public const string DATA_TAG = "DATA";
         public const string ACTIONS_TAG = "ACTIONS";
         public const string ACTION_TAG = "ACTION";
+
+        public const string GESTURE_FILE_NAME = "Gestures.mjg";
     }
 }
