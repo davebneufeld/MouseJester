@@ -18,11 +18,11 @@ namespace MouseJester
 {
     public partial class GestureCanvas : Window
     {
-        private bool mouseDown = false;
-        private Point prevPos = new Point(-1, -1);
+        private bool mouseDown;
+        private Point prevPos;
         private double minX, minY, maxX, maxY;
-        private List<Point> rawPoints = new List<Point>();
-        private Brush confirmColor = Brushes.Red;
+        private List<Point> rawPoints;
+        private Brush confirmColor;
 
         private bool isMatching;
         private bool displayPreview;
@@ -30,9 +30,9 @@ namespace MouseJester
         private Brush drawColor;
         private Brush outlineColor;
 
-        public bool defineTooSimilar = false;
-        public Gesture drawnGesture = null;
-        public Gesture matchedGesture = null;
+        public bool defineTooSimilar;
+        public Gesture drawnGesture;
+        public Gesture matchedGesture;
 
         public GestureCanvas(Brush drawColor, Brush outlineColor, bool drawOutline, bool isMatching /*as opposed to defining a gesture*/, bool displayPreview)
             : base()
@@ -42,7 +42,13 @@ namespace MouseJester
             this.drawColor = drawColor;
             this.drawOutline = drawOutline;
             this.outlineColor = outlineColor;
+            this.confirmColor = Brushes.Red;
             this.displayPreview = displayPreview;
+            this.rawPoints = new List<Point>();
+            this.mouseDown = false;
+            this.defineTooSimilar = false;
+            this.drawnGesture = null;
+            this.matchedGesture = null;
             GestureManager.Instance.hkey.Disabled = true;
             ShowDialog();
         }
@@ -69,6 +75,21 @@ namespace MouseJester
             lineSegment.Y2 = pos.Y;
             lineSegment.StrokeThickness = drawOutline ? 3 : 5;
             drawingGrid.Children.Add(lineSegment);
+        }
+
+        private void DrawEllipse(Point pos, Brush brushColor, Brush outlineColor, bool drawOutline)
+        {
+            Canvas ellipseCanvas = new Canvas();
+            Ellipse ellipse = new Ellipse();
+            ellipse.Stroke = outlineColor;
+            ellipse.Fill = brushColor;
+            ellipse.Width = 12;
+            ellipse.Height = 12;
+            ellipse.StrokeThickness = drawOutline ? 3 : 0;
+            ellipseCanvas.Children.Add(ellipse);
+            Canvas.SetLeft(ellipse, pos.X - 6);
+            Canvas.SetTop(ellipse, pos.Y - 6);
+            drawingGrid.Children.Add(ellipseCanvas);
         }
 
         private void DrawGesture(Gesture g, Brush drawColor, Brush outlineColor, bool drawOutline)
@@ -132,21 +153,6 @@ namespace MouseJester
             minY = maxY = startPos.Y;
 
             DrawEllipse(startPos, drawColor, outlineColor, drawOutline);
-        }
-
-        private void DrawEllipse(Point pos, Brush brushColor, Brush outlineColor, bool drawOutline)
-        {
-            Canvas ellipseCanvas = new Canvas();
-            Ellipse ellipse = new Ellipse();
-            ellipse.Stroke = outlineColor;
-            ellipse.Fill = brushColor;
-            ellipse.Width = 12;
-            ellipse.Height = 12;
-            ellipse.StrokeThickness = drawOutline ? 3 : 0;
-            ellipseCanvas.Children.Add(ellipse);
-            Canvas.SetLeft(ellipse, pos.X - 6);
-            Canvas.SetTop(ellipse, pos.Y - 6);
-            drawingGrid.Children.Add(ellipseCanvas);
         }
 
         private void MouseUpEventHandler(object sender, MouseEventArgs e)

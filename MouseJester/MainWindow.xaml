@@ -13,10 +13,9 @@
         </Grid.Resources>
         <!-- declare the NotifyIcon and configure commands with parameters -->
         <tb:TaskbarIcon
-            ToolTipText="MouseJester"
+            ToolTipText="MouseJester" IconSource="MouseJester.ico"
             LeftClickCommand="{StaticResource ShowCommand}"
             DoubleClickCommand="{StaticResource ShowCommand}">
-
             <!-- context menu  -->
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu>
