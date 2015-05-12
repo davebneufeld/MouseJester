@@ -127,8 +127,8 @@ namespace MouseJester
             for (int i = 1; i < PointVector.Count; i++)
             {
                 Point curPoint = PointVector[i];
-                //normalize resulting direction angle to [0,1]
-                _Directions.Add(Math.Atan2(curPoint.Y - prevPoint.Y, curPoint.X - prevPoint.X) / (2 * Math.PI) + 1);
+                //normalize resulting direction angle to [0,2]
+                _Directions.Add(Math.Atan2(curPoint.Y - prevPoint.Y, curPoint.X - prevPoint.X) / (Math.PI) + 1);
             }
         }
 

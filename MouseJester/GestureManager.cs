@@ -231,7 +231,7 @@ namespace MouseJester
                 double distance = Math.Abs(input.Directions[i] - definedGesture.Directions[i]);
 
                 //account for the periodic nature of angles
-                distance = distance > 0.5 ? 1 - distance : distance;
+                distance = distance > 1 ? 2 - distance : distance;
                 matchError += weight * Math.Pow(distance, 2);
             }
             return matchError;
