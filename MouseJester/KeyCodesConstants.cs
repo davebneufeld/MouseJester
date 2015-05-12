@@ -237,5 +237,7 @@ namespace MouseJester
         public const string ACTION_TAG = "ACTION";
 
         public const string GESTURE_FILE_NAME = "Gestures.mjg";
+
+        public const string APP_GUID = "2beefff3-041d-4715-8c44-012699128f27";
     }
 }

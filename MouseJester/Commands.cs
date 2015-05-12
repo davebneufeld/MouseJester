@@ -12,7 +12,7 @@ namespace MouseJester
     {
         public void Execute(object parameter)
         {
-            MainWindow.ExecuteShowEvent();
+            MainWindow.Instance.ExecuteShowEvent();
         }
 
         public bool CanExecute(object parameter)
@@ -27,7 +27,7 @@ namespace MouseJester
     {
         public void Execute(object parameter)
         {
-            MainWindow.ExecuteCloseEvent();
+            MainWindow.Instance.ExecuteCloseEvent();
         }
 
         public bool CanExecute(object parameter)

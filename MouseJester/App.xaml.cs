@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Threading;
 
 namespace MouseJester
 {
@@ -13,5 +14,24 @@ namespace MouseJester
     /// </summary>
     public partial class App : Application
     {
+        static Mutex singleInstanceLock;
+        public App()
+        {
+            Startup += App_Startup;
+        }
+
+        void App_Startup(object sender, StartupEventArgs e)
+        {
+            singleInstanceLock = new Mutex(false, "Global\\" + Constants.APP_GUID);
+            if (!singleInstanceLock.WaitOne(0, false))
+            {
+                MessageBox.Show("Instance already running.");
+                Application.Current.Shutdown();
+            }
+            else
+            {
+                MouseJester.MainWindow.Instance.Show();
+            }
+        }
     }
 }

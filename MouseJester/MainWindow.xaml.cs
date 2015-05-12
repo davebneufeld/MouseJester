@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Threading;
 
 namespace MouseJester
 {
@@ -20,30 +21,24 @@ namespace MouseJester
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static event EventHandler ShowEvent;
-        public static event EventHandler CloseEvent;
-
-        public static void ExecuteShowEvent()
+        private static MainWindow _Instance = null;
+        public static MainWindow Instance
         {
-            EventHandler handler = MainWindow.ShowEvent;
-            if (handler != null)
+            get
             {
-                handler(null, new EventArgs());
-            }
-        }
-
-        public static void ExecuteCloseEvent()
-        {
-            EventHandler handler = MainWindow.CloseEvent;
-            if (handler != null)
-            {
-                handler(null, new EventArgs());
+                if (_Instance == null)
+                {
+                    _Instance = new MainWindow();
+                }
+                return _Instance;
             }
         }
 
         List<HotKey> DefinedHotKeys;
+        public event EventHandler ShowEvent;
+        public event EventHandler CloseEvent;
 
-        public MainWindow()
+        private MainWindow() : base()
         {
             InitializeComponent();
             DefinedHotKeys = new List<HotKey>();
@@ -52,17 +47,21 @@ namespace MouseJester
 
             GestureManager.Instance.hkey = new HotKey(Constants.GESTURE_INPUT_ID, (uint)(KeyModifier.Ctrl), (uint)VirtualKey.B, GestureManager.Instance.HotKeyHandler);
             GestureManager.Instance.Load();
-            DefinedHotKeys.Add(GestureManager.Instance.hkey);        
+            DefinedHotKeys.Add(GestureManager.Instance.hkey);   
         }
 
         protected override void OnClosed(EventArgs e)
         {
             GestureManager.Instance.Save();
-            base.OnClosed(e);
-            foreach (HotKey hkey in DefinedHotKeys)
+            
+            if(DefinedHotKeys != null)
             {
-                hkey.Dispose();
+                foreach (HotKey hkey in DefinedHotKeys)
+                {
+                    hkey.Dispose();
+                }
             }
+            base.OnClosed(e);
         }
 
         protected override void OnStateChanged(EventArgs e)
@@ -85,6 +84,24 @@ namespace MouseJester
         private void CloseEventHandler(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        public void ExecuteShowEvent()
+        {
+            EventHandler handler = ShowEvent;
+            if (handler != null)
+            {
+                handler(null, new EventArgs());
+            }
+        }
+
+        public void ExecuteCloseEvent()
+        {
+            EventHandler handler = CloseEvent;
+            if (handler != null)
+            {
+                handler(null, new EventArgs());
+            }
         }
     }
 }
