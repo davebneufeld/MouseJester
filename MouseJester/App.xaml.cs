@@ -37,7 +37,6 @@ namespace MouseJester
 
         private void App_Exit(object sender, ExitEventArgs e)
         {
-            GestureManager.Instance.Save();
             singleInstanceLock.Close();
         }
     }
