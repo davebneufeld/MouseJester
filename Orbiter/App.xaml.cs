@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Gestr
+namespace MouseJester
 {
     /// <summary>
     /// Interaction logic for App.xaml

@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.IO;
 
-namespace Gestr
+namespace MouseJester
 {
     public class GestureManager
     {

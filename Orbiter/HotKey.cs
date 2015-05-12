@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
 
-namespace Gestr
+namespace MouseJester
 {
     public class HotKeyEventArgs : EventArgs
     {

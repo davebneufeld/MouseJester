@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.ComponentModel;
 
-namespace Gestr
+namespace MouseJester
 {
     public partial class GestureCanvas : Window
     {

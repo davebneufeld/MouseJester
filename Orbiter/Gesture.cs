@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Media;
 
 
-namespace Gestr
+namespace MouseJester
 {
     public class Gesture
     {
