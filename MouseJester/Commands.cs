@@ -10,31 +10,31 @@ namespace MouseJester
 {
     internal class ShowCommand : ICommand
     {
-        internal void Execute(object parameter)
+        public void Execute(object parameter)
         {
             MainWindow.Instance.ExecuteShowEvent();
         }
 
-        internal bool CanExecute(object parameter)
+        public bool CanExecute(object parameter)
         {
             return true;
         }
 
-        internal event EventHandler CanExecuteChanged;
+        public event EventHandler CanExecuteChanged;
     }
 
     internal class CloseCommand : ICommand
     {
-        internal void Execute(object parameter)
+        public void Execute(object parameter)
         {
             MainWindow.Instance.ExecuteCloseEvent();
         }
 
-        internal bool CanExecute(object parameter)
+        public bool CanExecute(object parameter)
         {
             return true;
         }
 
-        internal event EventHandler CanExecuteChanged;
+        public event EventHandler CanExecuteChanged;
     }
 }

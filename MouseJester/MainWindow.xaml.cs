@@ -34,32 +34,17 @@ namespace MouseJester
             }
         }
 
-        List<HotKey> DefinedHotKeys;
         public event EventHandler ShowEvent;
         public event EventHandler CloseEvent;
 
         private MainWindow() : base()
         {
             InitializeComponent();
-            DefinedHotKeys = new List<HotKey>();
             ShowEvent += ShowEventHandler;
             CloseEvent += CloseEventHandler;
 
-            GestureManager.Instance.hkey = new HotKey(Constants.GESTURE_INPUT_ID, (uint)(ModifierKeys.Control), (uint)Key.B, GestureManager.Instance.HotKeyHandler);
             GestureManager.Instance.Load();
-            DefinedHotKeys.Add(GestureManager.Instance.hkey);   
-        }
-
-        protected override void OnClosed(EventArgs e)
-        {
-            if(DefinedHotKeys != null)
-            {
-                foreach (HotKey hkey in DefinedHotKeys)
-                {
-                    hkey.Dispose();
-                }
-            }
-            base.OnClosed(e);
+            GestureManager.Instance.hkey = new HotKey(Constants.GESTURE_INPUT_ID, (uint)(ModifierKeys.Control), (uint)VirtualKey.B, GestureManager.Instance.HotKeyHandler);
         }
 
         protected override void OnStateChanged(EventArgs e)

@@ -84,7 +84,7 @@ namespace MouseJester
 
             if (!UnregisterHotKey(hWnd, id))
             {
-                Console.WriteLine("Could not unregister the hotkey.");
+                MessageBox.Show("Could not unregister the hotkey.");
             }
             disposed = true;
         }

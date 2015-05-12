@@ -19,7 +19,7 @@ namespace MouseJester
     public partial class HotKeyWindow : Window
     {
         private static HotKeyWindow _Instance = null;
-        private static List<HotKey> registeredKeys = new List<HotKey>();
+        internal static List<HotKey> RegisteredKeys = new List<HotKey>();
 
         public static HotKeyWindow Instance
         {
@@ -47,6 +47,18 @@ namespace MouseJester
             source.AddHook(WndProc);
         }
 
+        protected override void OnClosed(EventArgs e)
+        {
+            if (RegisteredKeys != null)
+            {
+                foreach (HotKey hkey in RegisteredKeys)
+                {
+                    hkey.Dispose();
+                }
+            }
+            base.OnClosed(e);
+        }
+
         private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             if(msg == Constants.WM_HOTKEY)
@@ -55,7 +67,7 @@ namespace MouseJester
                 int id = wParam.ToInt32();
 
                 //raise the event with the hotkey ID
-                foreach (HotKey hkey in registeredKeys)
+                foreach (HotKey hkey in RegisteredKeys)
                 {
                     if (hkey.id == id)
                     {
@@ -70,7 +82,7 @@ namespace MouseJester
 
         internal static void RegisterHotKey(HotKey hkey)
         {
-            registeredKeys.Add(hkey);
+            RegisteredKeys.Add(hkey);
         }
     }
 }
