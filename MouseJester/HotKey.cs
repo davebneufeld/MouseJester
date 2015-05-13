@@ -28,7 +28,7 @@ namespace MouseJester
         private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
 
         // Unregisters the hot key with Windows.
-        [DllImport("user32.dll", SetLastError=true)]
+        [DllImport("user32.dll", SetLastError = true)]
         private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
         public event HotkeyHandlerDelegate HotKeyPressedEvent;
