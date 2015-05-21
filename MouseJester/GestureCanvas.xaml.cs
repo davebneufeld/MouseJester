@@ -79,7 +79,7 @@ namespace MouseJester
             drawingGrid.Children.Add(lineSegment);
         }
 
-        private void DrawEllipse(Point pos, Brush brushColor, Brush outlineColor, bool drawOutline)
+        private void DrawEllipse(Point pos, int width, int height, Brush brushColor, Brush outlineColor, bool drawOutline)
         {
             Canvas ellipseCanvas = new Canvas();
             Ellipse ellipse = new Ellipse();
@@ -112,7 +112,7 @@ namespace MouseJester
             if (points.Count == 0) return;
 
             Point prevPos = points[0];
-            DrawEllipse(prevPos, drawColor, outlineColor, drawOutline);
+            DrawEllipse(prevPos, 12, 12, drawColor, outlineColor, drawOutline);
             foreach (Point pos in points)
             {
                 DrawLine(prevPos, pos, drawColor, outlineColor, drawOutline);
@@ -154,7 +154,7 @@ namespace MouseJester
             minX = maxX = startPos.X;
             minY = maxY = startPos.Y;
 
-            DrawEllipse(startPos, drawColor, outlineColor, drawOutline);
+            DrawEllipse(startPos, 12, 12, drawColor, outlineColor, drawOutline);
         }
 
         private void MouseUpEventHandler(object sender, MouseEventArgs e)

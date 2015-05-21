@@ -180,7 +180,12 @@ namespace MouseJester
 
         public void HotKeyHandler(Object sender, HotKeyEventArgs e)
         {
-            if (e.id == Constants.GESTURE_INPUT_ID)
+            HotKeyProcesser(e.id);
+        }
+
+        private void HotKeyProcesser(int keyID)
+        {
+            if (keyID == Constants.GESTURE_INPUT_ID)
             {
                 GestureCanvas gDrawer = InputGesture(true);
                 if (gDrawer != null)
