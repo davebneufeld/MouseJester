@@ -56,6 +56,8 @@ namespace MouseJester
 
         public void Save(string fileName, List<Gesture> gestures)
         {
+            XmlWriterSettings xmlSettings = new XmlWriterSettings();
+            xmlSettings.Indent = true;
             XmlWriter xmlWriter = XmlWriter.Create(fileName);
             xmlWriter.WriteStartDocument();
             xmlWriter.WriteStartElement(Constants.GESTURES_TAG);
