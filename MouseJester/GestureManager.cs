@@ -44,6 +44,23 @@ namespace MouseJester
             }
         }
 
+        private HotKey _hkeyDefine = null;
+        public HotKey hkeyDefine
+        {
+            get
+            {
+                return _hkeyDefine;
+            }
+            set
+            {
+                if (_hkeyDefine != null)
+                {
+                    _hkeyDefine.Dispose();
+                }
+                _hkeyDefine = value;
+            }
+        }
+
         private GestureManager()
         {
             GestureCollection = new List<Gesture>();
@@ -116,6 +133,7 @@ namespace MouseJester
                         {
                             x = BitConverter.ToDouble(dataBuffer, 0);
                             y = BitConverter.ToDouble(dataBuffer, 8);
+
                             gesturePoints.Add(new Point(x, y));
                         }
                     }
@@ -175,6 +193,7 @@ namespace MouseJester
         {
             GestureCollection.Add(g);
         }
+
         public int Count()
         {
             return GestureCollection.Count;
@@ -197,6 +216,15 @@ namespace MouseJester
                     {
                         gMatched.ExecuteAction();
                     }
+                }
+            }
+            else if (keyID == Constants.GESTURE_DEFINE_ID) 
+            {
+                GestureCanvas gDrawer = InputGesture(false);
+                if (gDrawer != null && !gDrawer.defineTooSimilar)
+                {
+                    Gesture gDrawn = gDrawer.drawnGesture;
+                    this.Add(gDrawn);
                 }
             }
         }

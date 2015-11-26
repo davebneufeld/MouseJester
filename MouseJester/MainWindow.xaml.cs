@@ -45,6 +45,7 @@ namespace MouseJester
 
             GestureManager.Instance.Load();
             GestureManager.Instance.hkey = new HotKey(Constants.GESTURE_INPUT_ID, (uint)(ModifierKeys.Control), (uint)VirtualKey.B, GestureManager.Instance.HotKeyHandler);
+            GestureManager.Instance.hkeyDefine = new HotKey(Constants.GESTURE_DEFINE_ID, (uint)(ModifierKeys.Control), (uint)VirtualKey.V, GestureManager.Instance.HotKeyHandler);
         }
 
         protected override void OnStateChanged(EventArgs e)
@@ -95,6 +96,7 @@ namespace MouseJester
                 {
                     hkey.Dispose();
                 }
+                GestureManager.Instance.Save();
             }
             base.OnClosed(e);
         }

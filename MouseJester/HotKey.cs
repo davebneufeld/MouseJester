@@ -79,8 +79,7 @@ namespace MouseJester
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposed)
-                return;
+            if (disposed) return;
 
             if (!UnregisterHotKey(hWnd, id))
             {

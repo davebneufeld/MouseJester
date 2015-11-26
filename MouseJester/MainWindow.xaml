@@ -4,7 +4,7 @@
         xmlns:tb="http://www.hardcodet.net/taskbar"
         xmlns:local="clr-namespace:MouseJester"
         Title="MainWindow" Height="518.02" Width="820.376"
-        WindowState="Minimized" Visibility="Hidden">
+        WindowState="Minimized">
     <Grid>
         <!-- declare the command as a local resource -->
         <Grid.Resources>
@@ -24,5 +24,12 @@
                 </ContextMenu>
             </tb:TaskbarIcon.ContextMenu>
         </tb:TaskbarIcon>
+        <DataGrid HorizontalAlignment="Left" Height="468" Margin="10,10,0,0" VerticalAlignment="Top" Width="792">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn/>
+                <DataGridTextColumn/>
+                <DataGridTemplateColumn/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>
