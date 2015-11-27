@@ -26,11 +26,12 @@
         </tb:TaskbarIcon>
         <DataGrid Name="gestureGrid" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled" ColumnHeaderHeight="25" RowHeaderWidth="0" AutoGenerateColumns="False" RowHeight="100" HorizontalAlignment="Left" Margin="10,10,0,61" Width="898" CanUserResizeColumns="False">
             <DataGrid.Columns>
-
                 <DataGridTemplateColumn Width="120" Header="Gesture">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Image Source="{Binding Path=ImageFullPath}" />
+                            <Button BorderThickness="0" Background="White" Click="RedefineGestureClick" Tag="{Binding Path=InternalID}">
+                                <Image Source="{Binding Path=ImageFullPath}" />
+                            </Button>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

@@ -120,6 +120,15 @@ namespace MouseJester
             }
         }
 
+        private void RedefineGestureClick(object sender, RoutedEventArgs e)
+        {
+            if (sender != null)
+            {
+                int internalGestureID = (int)(sender as Button).Tag;
+                GestureManager.Instance.RedefineGesture(internalGestureID);
+            }
+        }
+
         private void WindowCapTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)

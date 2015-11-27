@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -91,6 +92,17 @@ namespace MouseJester
             this._PointVector = new List<Point>(other.PointVector);
             this._Directions = new List<double>(other.Directions);
             this.Action = new GestureAction(other.Action);
+
+            // make a duplicate of file
+            this._ImagePath = Guid.NewGuid().ToString() + ".png";
+            try
+            {
+                File.Copy(other.ImagePath, this._ImagePath);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
         }
 
         public Gesture(List<Point> rawPoints)
@@ -139,6 +151,14 @@ namespace MouseJester
             this._Directions = new List<double>();
             this.scaleAndCenterGesture(rawPoints, minX, minY, maxX, maxY);
             this.Action = new GestureAction();
+        }
+
+        internal Gesture copyActionAndDescriptionTo(Gesture gestureWithDefinition)
+        {
+            gestureWithDefinition.Action = this.Action;
+            gestureWithDefinition._Description = this._Description;
+
+            return gestureWithDefinition;
         }
 
         private void scaleAndCenterGesture(List<Point> rawPoints, double minX, double minY, double maxX, double maxY)

@@ -71,7 +71,7 @@ namespace MouseJester
             List<String> currentImagePaths = new List<String>();
             foreach (Gesture g in MainWindow.Instance.GestureCollection)
             {
-                currentImagePaths.Add(g.ImagePath);
+                currentImagePaths.Add(g.ImageFullPath);
             }
 
             IEnumerable<String> unusedPngFiles = pngFilesInDirectory.Except(currentImagePaths);
@@ -328,15 +328,17 @@ namespace MouseJester
             MainWindow.Instance.GestureCollection.Add(g);
         }
 
-        public void Remove(int internalGestureID)
+        public Gesture Remove(int internalGestureID)
         {
             Gesture item = MainWindow.Instance.GestureCollection.Single(x => x.InternalID == internalGestureID);
             MainWindow.Instance.GestureCollection.Remove(item);
+
+            return item;
         }
 
         public int Count()
         {
-            return MainWindow.Instance.GestureCollection.Count;
+            return MainWindow.Instance.GestureCollection.Count();
         }
 
         public void HotKeyHandler(Object sender, HotKeyEventArgs e)
@@ -371,6 +373,30 @@ namespace MouseJester
             }
         }
 
+        internal void RedefineGesture(int internalGestureID)
+        {
+            GestureCanvas gDrawer = InputGesture(false, internalGestureID);
+            if (gDrawer != null && !gDrawer.defineTooSimilar)
+            {
+                Gesture gDrawn = gDrawer.drawnGesture;
+
+                foreach (Gesture g in MainWindow.Instance.GestureCollection)
+                {
+                    if (g.InternalID == internalGestureID)
+                    {
+                        int index = MainWindow.Instance.GestureCollection.IndexOf(g);
+                        g.copyActionAndDescriptionTo(gDrawn);
+                        MainWindow.Instance.GestureCollection[index] = gDrawn;
+                        break;
+                    }
+                }
+            }
+            else if (gDrawer.defineTooSimilar)
+            {
+                MessageBox.Show("Gesture too similar to a previously defined gesture.");
+            }
+        }
+
         private void HotKeyProcesser(int keyID)
         {
             if (keyID == Constants.GESTURE_INPUT_ID)
@@ -379,9 +405,9 @@ namespace MouseJester
             }
         }
 
-        public GestureCanvas InputGesture(bool isMatching /*as opposed to defining*/)
+        public GestureCanvas InputGesture(bool isMatching /*as opposed to defining*/, int excludeIdFromMatch = -1)
         {
-            GestureCanvas drawer = new GestureCanvas(false, isMatching, true);
+            GestureCanvas drawer = new GestureCanvas(false, isMatching, true, excludeIdFromMatch);
             if (drawer.DialogResult == true)
             {
                 return drawer;
@@ -392,11 +418,16 @@ namespace MouseJester
             }
         }
 
-        public KeyValuePair<double, Gesture> Recognize(Gesture input)
+        public KeyValuePair<double, Gesture> Recognize(Gesture input, int excludeIdFromMatch)
         {
             KeyValuePair<double, Gesture> bestMatch = new KeyValuePair<double, Gesture>(1, null);
             foreach(Gesture definedGesture in MainWindow.Instance.GestureCollection)
             {
+                if (definedGesture.InternalID == excludeIdFromMatch)
+                {
+                    continue;
+                }
+
                 double matchError = PerformMatch(input, definedGesture);
                 if (matchError < bestMatch.Key)
                 {

@@ -29,6 +29,7 @@ namespace MouseJester
         private bool displayPreview;
         private bool drawOutline;
         private bool finished;
+        private int excludeIdFromMatch;
         private Brush drawColor;
         private Brush outlineColor;
         private Canvas drawingCanvas;
@@ -37,7 +38,7 @@ namespace MouseJester
         public Gesture drawnGesture;
         public Gesture matchedGesture;
 
-        public GestureCanvas(bool drawOutline, bool isMatching /*as opposed to defining a gesture*/, bool displayPreview)
+        public GestureCanvas(bool drawOutline, bool isMatching /*as opposed to defining a gesture*/, bool displayPreview, int excludeIdFromMatch)
             : base()
         {
             InitializeComponent();
@@ -47,6 +48,7 @@ namespace MouseJester
             this.outlineColor = Brushes.Black;
             this.confirmColor = Brushes.LightSteelBlue;
             this.displayPreview = displayPreview;
+            this.excludeIdFromMatch = excludeIdFromMatch;
             this.rawPoints = new List<Point>();
             this.mouseDown = false;
             this.finished = false;
@@ -285,7 +287,7 @@ namespace MouseJester
             drawnGesture = new Gesture(rawPoints, minX, minY, maxX, maxY);
             if (drawnGesture != null)
             {
-                KeyValuePair<double, Gesture> matched = GestureManager.Instance.Recognize(drawnGesture);
+                KeyValuePair<double, Gesture> matched = GestureManager.Instance.Recognize(drawnGesture, excludeIdFromMatch);
                 double matchError = matched.Key;
                 double threshold = isMatching ? Constants.MATCH_THRESHOLD : Constants.DEFINE_NEW_THRESHOLD;
                 Gesture closestMatch = matchError < threshold ? matched.Value : null;
