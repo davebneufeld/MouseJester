@@ -90,10 +90,11 @@ namespace MouseJester
             lineSegment.MouseMove += MouseMoveEventHandler;
 
             double redFraction = ((pos.X - prevPos.X) / Constants.MIN_LINE_LEN + 1) / 2;
+            double greenFraction = ((pos.Y - prevPos.Y) / Constants.MIN_LINE_LEN + 1) / 2;
 
             if (brushColor == null)
             {
-                lineSegment.Stroke = new SolidColorBrush(Color.FromArgb(255, (byte)(255 * redFraction), 0, (byte)(255 * (1 - redFraction))));
+                lineSegment.Stroke = new SolidColorBrush(Color.FromArgb(255, (byte)(255 * redFraction), (byte)(255 *(1 - greenFraction)), (byte)(255 * (1 - redFraction))));
             }
             else
             {
@@ -270,11 +271,15 @@ namespace MouseJester
                 (int)drawingCanvas.RenderSize.Height, dpi, dpi, System.Windows.Media.PixelFormats.Default);
             rtb.Render(drawingCanvas);
 
+            int minXAdjusted = (int)minX - 7;
+            int minYAdjusted = (int)minY - 7;
+            int maxXAdjusted = (int)maxX + 7;
+            int maxYAdjusted = (int)maxY + 7;
 
-            int minXAdjusted = (int) ((minX >= 0) ? minX : 0);
-            int minYAdjusted = (int) ((minY >= 0) ? minY : 0);
-            int maxXAdjusted = (int)((maxX <= drawingCanvas.RenderSize.Width) ? maxX : drawingCanvas.RenderSize.Width);
-            int maxYAdjusted = (int)((maxY <= drawingCanvas.RenderSize.Height) ? maxY : drawingCanvas.RenderSize.Height);
+            minXAdjusted = (int)((minXAdjusted >= 0) ? minXAdjusted : 0);
+            minYAdjusted = (int)((minYAdjusted >= 0) ? minYAdjusted : 0);
+            maxXAdjusted = (int)((maxXAdjusted <= drawingCanvas.RenderSize.Width) ? maxXAdjusted : drawingCanvas.RenderSize.Width);
+            maxYAdjusted = (int)((maxYAdjusted <= drawingCanvas.RenderSize.Height) ? maxYAdjusted : drawingCanvas.RenderSize.Height);
             CroppedBitmap crop = new CroppedBitmap(rtb, new Int32Rect(minXAdjusted, minYAdjusted, maxXAdjusted - minXAdjusted, maxYAdjusted - minYAdjusted));
 
             BitmapEncoder pngEncoder = new PngBitmapEncoder();
