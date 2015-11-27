@@ -42,7 +42,7 @@ namespace MouseJester
         {
             InitializeComponent();
             this.isMatching = isMatching;
-            this.drawColor = Brushes.Red;
+            this.drawColor = null;
             this.drawOutline = drawOutline;
             this.outlineColor = Brushes.Black;
             this.confirmColor = Brushes.LightSteelBlue;
@@ -89,7 +89,16 @@ namespace MouseJester
             lineSegment.MouseUp += MouseUpEventHandler;
             lineSegment.MouseMove += MouseMoveEventHandler;
 
-            lineSegment.Stroke = brushColor;
+            double redFraction = ((pos.X - prevPos.X) / Constants.MIN_LINE_LEN + 1) / 2;
+
+            if (brushColor == null)
+            {
+                lineSegment.Stroke = new SolidColorBrush(Color.FromArgb(255, (byte)(255 * redFraction), 0, (byte)(255 * (1 - redFraction))));
+            }
+            else
+            {
+                lineSegment.Stroke = brushColor;
+            }
             lineSegment.X1 = prevPos.X;
             lineSegment.X2 = pos.X;
             lineSegment.Y1 = prevPos.Y;
@@ -261,7 +270,12 @@ namespace MouseJester
                 (int)drawingCanvas.RenderSize.Height, dpi, dpi, System.Windows.Media.PixelFormats.Default);
             rtb.Render(drawingCanvas);
 
-            var crop = new CroppedBitmap(rtb, new Int32Rect((int)minX, (int)minY, (int)(maxX - minX), (int)(maxY - minY)));
+
+            int minXAdjusted = (int) ((minX >= 0) ? minX : 0);
+            int minYAdjusted = (int) ((minY >= 0) ? minY : 0);
+            int maxXAdjusted = (int)((maxX <= drawingCanvas.RenderSize.Width) ? maxX : drawingCanvas.RenderSize.Width);
+            int maxYAdjusted = (int)((maxY <= drawingCanvas.RenderSize.Height) ? maxY : drawingCanvas.RenderSize.Height);
+            CroppedBitmap crop = new CroppedBitmap(rtb, new Int32Rect(minXAdjusted, minYAdjusted, maxXAdjusted - minXAdjusted, maxYAdjusted - minYAdjusted));
 
             BitmapEncoder pngEncoder = new PngBitmapEncoder();
             pngEncoder.Frames.Add(BitmapFrame.Create(crop));

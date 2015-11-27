@@ -35,11 +35,34 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTextColumn Width="140" Header="Description" Binding="{Binding Path=Description}"/>
-
-                <DataGridTextColumn Width="180" Header="Trigger Path" Binding="{Binding Path=Action.Path}"/>
-                <DataGridTextColumn Width="180" Header="Arguments" Binding="{Binding Path=Action.Arguments}"/>
-                <DataGridTextColumn Width="180" Header="Start In" Binding="{Binding Path=Action.StartIn}"/>
+                <DataGridTextColumn Width="140" Header="Description" Binding="{Binding Path=Description}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style>
+                            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Width="180" Header="Trigger Path" Binding="{Binding Path=Action.Path}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style>
+                            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Width="180" Header="Arguments" Binding="{Binding Path=Action.Arguments}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style>
+                            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Width="180" Header="Start In" Binding="{Binding Path=Action.StartIn}">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style>
+                            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
 
                 <DataGridTemplateColumn Width="80">
                     <DataGridTemplateColumn.CellTemplate>
