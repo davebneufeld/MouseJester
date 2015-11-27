@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:tb="http://www.hardcodet.net/taskbar"
         xmlns:local="clr-namespace:MouseJester"
-        Title="MouseJester" Height="642" Width="935" ResizeMode="CanResize"
-        WindowState="Minimized" Visibility="Visible" Icon="MouseJester.ico">
+        Title="MouseJester" Height="642" Width="935" ResizeMode="CanMinimize"
+        WindowState="Minimized" Visibility="Hidden" Icon="MouseJester.ico">
     <Grid Margin="0,0,4,6">
         <!-- declare the command as a local resource -->
         <Grid.Resources>
