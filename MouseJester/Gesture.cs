@@ -49,6 +49,10 @@ namespace MouseJester
             {
                 return "C:\\Users\\qaovxtazypdl\\Source\\Repos\\MouseJester\\MouseJester\\bin\\Debug\\test.jpg";
             }
+            set
+            {
+                _ImagePath = value;
+            }
         }
 
         public GestureAction Action { get; set; }
@@ -155,11 +159,5 @@ namespace MouseJester
             this._Description = Name;
             GestureManager.Instance.Add(this);
         }
-
-        public void ExecuteAction()
-        {
-
-        }
-
     }
 }

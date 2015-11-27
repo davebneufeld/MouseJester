@@ -25,6 +25,10 @@ namespace MouseJester
         public const string DATA_TAG = "DATA";
         public const string ACTIONS_TAG = "ACTIONS";
         public const string ACTION_TAG = "ACTION";
+        public const string IMAGE_PATH_TAG = "IMAGEPATH";
+        public const string ACTION_PATH_TAG = "PATH";
+        public const string ACTION_ARGS_TAG = "ARGS";
+        public const string ACTION_START_IN_TAG = "START";
 
         public const string GESTURE_FILE_NAME = "Gestures.mjg";
         public const string APP_GUID = "2beefff3-041d-4715-8c44-012699128f27";

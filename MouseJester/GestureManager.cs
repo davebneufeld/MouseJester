@@ -81,9 +81,12 @@ namespace MouseJester
             {
                 xmlWriter.WriteStartElement(Constants.GESTURE_TAG);
                 {
-                    xmlWriter.WriteStartElement(Constants.NAME_TAG);
-                    xmlWriter.WriteString(g.Description);
-                    xmlWriter.WriteEndElement();
+                    if (!String.IsNullOrEmpty(g.Description))
+                    {
+                        xmlWriter.WriteStartElement(Constants.NAME_TAG);
+                        xmlWriter.WriteString(g.Description);
+                        xmlWriter.WriteEndElement();
+                    }
 
                     xmlWriter.WriteStartElement(Constants.DATA_TAG);
                     foreach (Point p in g.PointVector)
@@ -93,8 +96,37 @@ namespace MouseJester
                     }
                     xmlWriter.WriteEndElement();
 
-                    xmlWriter.WriteStartElement(Constants.ACTIONS_TAG);
-                    xmlWriter.WriteString("404");
+                    if (!String.IsNullOrEmpty(g.Action.Path) ||
+                        !String.IsNullOrEmpty(g.Action.Arguments) ||
+                        !String.IsNullOrEmpty(g.Action.StartIn))
+                    {
+                        xmlWriter.WriteStartElement(Constants.ACTIONS_TAG);
+                        if (!String.IsNullOrEmpty(g.Action.Path))
+                        {
+                            xmlWriter.WriteStartElement(Constants.ACTION_PATH_TAG);
+                            xmlWriter.WriteString(g.Action.Path);
+                            xmlWriter.WriteEndElement();
+                        }
+
+                        if (!String.IsNullOrEmpty(g.Action.Arguments))
+                        {
+                            xmlWriter.WriteStartElement(Constants.ACTION_ARGS_TAG);
+                            xmlWriter.WriteString(g.Action.Arguments);
+                            xmlWriter.WriteEndElement();
+                        }
+
+                        if (!String.IsNullOrEmpty(g.Action.StartIn))
+                        {
+                            xmlWriter.WriteStartElement(Constants.ACTION_START_IN_TAG);
+                            xmlWriter.WriteString(g.Action.StartIn);
+                            xmlWriter.WriteEndElement();
+                        }
+                        xmlWriter.WriteEndElement();
+                    }
+
+
+                    xmlWriter.WriteStartElement(Constants.IMAGE_PATH_TAG);
+                    xmlWriter.WriteString(g.ImagePath);
                     xmlWriter.WriteEndElement();
                 }
                 xmlWriter.WriteEndElement();
@@ -108,6 +140,11 @@ namespace MouseJester
         private void LoadGesture(XmlReader reader)
         {
             string Name = "";
+            string ActionPath = "";
+            string ActionArgs = "";
+            string ActionStartIn = "";
+            string ImagePath = "";
+
             List<Point> gesturePoints = new List<Point>();
 
             while (reader.Read())
@@ -135,15 +172,50 @@ namespace MouseJester
                             gesturePoints.Add(new Point(x, y));
                         }
                     }
-                    else if (reader.Name == Constants.ACTIONS_TAG)
+                    else if (reader.Name == Constants.IMAGE_PATH_TAG)
                     {
                         reader.Read(); //read value node
+                        ImagePath = reader.Value;
                         reader.Read(); //read end tag
+                    }
+                    else if (reader.Name == Constants.ACTIONS_TAG)
+                    {
+                        while (reader.Read())
+                        {
+                            if (reader.NodeType == XmlNodeType.Element)
+                            {
+                                if (reader.Name == Constants.ACTION_PATH_TAG)
+                                {
+                                    reader.Read(); //read value node
+                                    ActionPath = reader.Value;
+                                    reader.Read(); //read end tag
+                                }
+                                else if (reader.Name == Constants.ACTION_ARGS_TAG)
+                                {
+                                    reader.Read(); //read value node
+                                    ActionArgs = reader.Value;
+                                    reader.Read(); //read end tag
+                                }
+                                else if (reader.Name == Constants.ACTION_START_IN_TAG)
+                                {
+                                    reader.Read(); //read value node
+                                    ActionStartIn = reader.Value;
+                                    reader.Read(); //read end tag
+                                }
+                            }
+                            else if (reader.NodeType == XmlNodeType.EndElement)
+                            {
+                                break;
+                            }
+                        }
                     }
                 }
                 else if (reader.NodeType == XmlNodeType.EndElement)
                 {
-                    new Gesture(gesturePoints).Register(Name);
+                    Gesture g = new Gesture(gesturePoints);
+                    g.Register(Name);
+                    g.Action = new GestureAction(ActionPath, ActionArgs, ActionStartIn);
+                    g.ImagePath = ImagePath;
                     break;
                 }
             }
@@ -202,28 +274,38 @@ namespace MouseJester
             HotKeyProcesser(e.id);
         }
 
+        private void MatchAndExecuteGesture()
+        {
+            GestureCanvas gDrawer = InputGesture(true);
+            if (gDrawer != null)
+            {
+                Gesture gMatched = gDrawer.matchedGesture;
+                if (gMatched != null)
+                {
+                    gMatched.Action.Execute();
+                }
+            }
+        }
+
+        private void DefineNewGesture()
+        {
+            GestureCanvas gDrawer = InputGesture(false);
+            if (gDrawer != null && !gDrawer.defineTooSimilar)
+            {
+                Gesture gDrawn = gDrawer.drawnGesture;
+                this.Add(gDrawn);
+            }
+        }
+
         private void HotKeyProcesser(int keyID)
         {
             if (keyID == Constants.GESTURE_INPUT_ID)
             {
-                GestureCanvas gDrawer = InputGesture(true);
-                if (gDrawer != null)
-                {
-                    Gesture gMatched = gDrawer.matchedGesture;
-                    if (gMatched != null)
-                    {
-                        gMatched.ExecuteAction();
-                    }
-                }
+                this.MatchAndExecuteGesture();
             }
             else if (keyID == Constants.GESTURE_DEFINE_ID) 
             {
-                GestureCanvas gDrawer = InputGesture(false);
-                if (gDrawer != null && !gDrawer.defineTooSimilar)
-                {
-                    Gesture gDrawn = gDrawer.drawnGesture;
-                    this.Add(gDrawn);
-                }
+                this.DefineNewGesture();
             }
         }
 

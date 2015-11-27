@@ -10,12 +10,12 @@ namespace MouseJester
     {
         public GestureAction()
         {
-            this.Path = "wtf";
+            this.Path = "";
             this.Arguments = "";
             this.StartIn = "";
         }
 
-        public GestureAction(String path, String arguments, String startIn) {
+        public GestureAction(String Path, String Arguments, String StartIn) {
             this.Path = Path;
             this.Arguments = Arguments;
             this.StartIn = StartIn;
@@ -33,5 +33,9 @@ namespace MouseJester
         public String Arguments { get; set; }
 
         public String StartIn { get; set; }
+
+        public void Execute() {
+
+        }
     }
 }

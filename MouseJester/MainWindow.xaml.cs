@@ -103,5 +103,15 @@ namespace MouseJester
             }
             base.OnClosed(e);
         }
+
+        private void NewGestureButtonClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SaveButtonClick(object sender, RoutedEventArgs e)
+        {
+            GestureManager.Instance.Save();
+        }
     }
 }
