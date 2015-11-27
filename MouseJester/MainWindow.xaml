@@ -52,7 +52,7 @@
         </DataGrid>
         <Button Content="Save" HorizontalAlignment="Left" Margin="815,575,0,0" VerticalAlignment="Top" Width="75" Height="32" Click="SaveButtonClick"/>
         <Button Content="New" HorizontalAlignment="Left" Margin="10,575,0,0" VerticalAlignment="Top" Width="75" Height="32" Click="NewGestureButtonClick"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="376,580,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="150" />
         <Button Content="Reload" HorizontalAlignment="Left" Margin="715,575,0,0" VerticalAlignment="Top" Width="75" Height="32" Click="ReloadButtonClick"/>
+        <TextBox Name="HotKeyTextBox" HorizontalAlignment="Left" Height="23" Margin="376,580,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="150" IsReadOnly="True" KeyDown="WindowCapTextBox_KeyDown" />
     </Grid>
 </Window>

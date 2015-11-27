@@ -14,12 +14,12 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace MouseJester
+namespace Qaovxtazypdl.GlobalHotKeys
 { 
     public partial class HotKeyWindow : Window
     {
         private static HotKeyWindow _Instance = null;
-        internal static List<HotKey> RegisteredKeys = new List<HotKey>();
+        private static List<HotKey> RegisteredKeys = new List<HotKey>();
 
         public static HotKeyWindow Instance
         {
@@ -33,11 +33,13 @@ namespace MouseJester
             }
         }
 
+        internal IntPtr hWnd;
         private HotKeyWindow() : base()
         {
             //make this window invisible.
             InitializeComponent();
             Show();
+            hWnd = (new WindowInteropHelper(this)).Handle;
         }
 
         protected override void OnSourceInitialized(EventArgs e)
@@ -49,7 +51,7 @@ namespace MouseJester
 
         private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
-            if(msg == Constants.WM_HOTKEY)
+            if(msg == HotKey.WM_HOTKEY)
             {
                 //check hotkey register ID
                 int id = wParam.ToInt32();

@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Threading;
 using System.Collections.ObjectModel;
+using Qaovxtazypdl.GlobalHotKeys;
 
 namespace MouseJester
 {
@@ -46,7 +47,6 @@ namespace MouseJester
             InitializeComponent();
             ShowEvent += ShowEventHandler;
             CloseEvent += CloseEventHandler;
-            GestureManager.Instance.hkey = new HotKey(Constants.GESTURE_INPUT_ID, (uint)(ModifierKeys.Control), (uint)VirtualKey.B, GestureManager.Instance.HotKeyHandler);
             gestureGrid.ItemsSource = GestureCollection;
         }
 
@@ -92,14 +92,7 @@ namespace MouseJester
 
         protected override void OnClosed(EventArgs e)
         {
-            if (HotKeyWindow.RegisteredKeys != null)
-            {
-                foreach (HotKey hkey in HotKeyWindow.RegisteredKeys)
-                {
-                    hkey.Dispose();
-                }
-                GestureManager.Instance.Save();
-            }
+            GestureManager.Instance.Save();
             base.OnClosed(e);
         }
 
@@ -125,6 +118,32 @@ namespace MouseJester
                 int internalGestureID = (int)(sender as Button).Tag;
                 GestureManager.Instance.Remove(internalGestureID);
             }
+        }
+
+        private void WindowCapTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                SetHotKeyString("");
+                GestureManager.Instance.InitiateGestureKey = 0;
+                GestureManager.Instance.InitiateGestureModifiers = 0;
+                return;
+            }
+            uint vkey = (uint)KeyInterop.VirtualKeyFromKey(e.Key);
+            uint modifiers = (uint)e.KeyboardDevice.Modifiers;
+            if (Qaovxtazypdl.GlobalHotKeys.Constants.vkeyMap.ContainsKey(vkey) &&
+                modifiers != 0 &&
+                HotKey.isHotKeyAvilable(modifiers, vkey))
+            {
+                SetHotKeyString(HotKey.GetKeyComboString(modifiers, (uint)KeyInterop.VirtualKeyFromKey(e.Key)));
+                GestureManager.Instance.InitiateGestureKey = vkey;
+                GestureManager.Instance.InitiateGestureModifiers = modifiers;
+            }
+        }
+
+        internal void SetHotKeyString(String HotKeyString)
+        {
+            HotKeyTextBox.Text = HotKeyString;
         }
     }
 }

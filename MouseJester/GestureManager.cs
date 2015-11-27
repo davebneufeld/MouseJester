@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.IO;
 using System.Collections.ObjectModel;
+using Qaovxtazypdl.GlobalHotKeys;
 
 namespace MouseJester
 {
@@ -33,7 +34,7 @@ namespace MouseJester
             {
                 return _hkey;
             }
-            set
+            private set
             {
                 if (_hkey != null)
                 {
@@ -43,13 +44,29 @@ namespace MouseJester
             }
         }
 
-        private GestureManager()
+        internal uint InitiateGestureKey = 0;
+        internal uint InitiateGestureModifiers = 0;
+
+        internal void UpdateHotKey()
         {
+            if (Qaovxtazypdl.GlobalHotKeys.Constants.vkeyMap.ContainsKey(InitiateGestureKey) &&
+                InitiateGestureModifiers != 0 &&
+                HotKey.isHotKeyAvilable(InitiateGestureModifiers, InitiateGestureKey))
+            {
+                this.hkey = new HotKey(
+                    Constants.GESTURE_INPUT_ID, 
+                    InitiateGestureModifiers, 
+                    InitiateGestureKey, 
+                    GestureManager.Instance.HotKeyHandler
+                );
+            }
+            MainWindow.Instance.SetHotKeyString(HotKey.GetKeyComboString(InitiateGestureModifiers, InitiateGestureKey));
         }
 
         public void Save()
         {
             Save(Constants.GESTURE_FILE_NAME, MainWindow.Instance.GestureCollection);
+            UpdateHotKey();
         }
 
         public void Save(string fileName, ObservableCollection<Gesture> gestures)
@@ -59,6 +76,19 @@ namespace MouseJester
             XmlWriter xmlWriter = XmlWriter.Create(fileName);
             xmlWriter.WriteStartDocument();
             xmlWriter.WriteStartElement(Constants.GESTURES_TAG);
+
+            xmlWriter.WriteStartElement(Constants.GESTURE_HKEY_TAG);
+            xmlWriter.WriteStartElement(Constants.MODIFIERS_TAG);
+            {
+                xmlWriter.WriteString("" + InitiateGestureModifiers);
+            }
+            xmlWriter.WriteEndElement();
+            xmlWriter.WriteStartElement(Constants.KEY_TAG);
+            {
+                xmlWriter.WriteString("" + InitiateGestureKey);
+            }
+            xmlWriter.WriteEndElement();
+            xmlWriter.WriteEndElement();
 
             foreach (Gesture g in gestures)
             {
@@ -208,6 +238,7 @@ namespace MouseJester
         {
             MainWindow.Instance.GestureCollection.Clear();
             Load(Constants.GESTURE_FILE_NAME);
+            UpdateHotKey();
         }
 
         public void Load(string fileName)
@@ -223,6 +254,28 @@ namespace MouseJester
                             if (reader.Name == Constants.GESTURE_TAG)
                             {
                                 LoadGesture(reader);
+                            }
+                            else if (reader.Name == Constants.GESTURE_HKEY_TAG)
+                            {
+                                while (reader.Read())
+                                {
+                                    if (reader.Name == Constants.MODIFIERS_TAG)
+                                    {
+                                        reader.Read();
+                                        InitiateGestureModifiers = (uint)Int32.Parse(reader.Value);
+                                        reader.Read();
+                                    }
+                                    else if (reader.Name == Constants.KEY_TAG)
+                                    {
+                                        reader.Read();
+                                        InitiateGestureKey = (uint)Int32.Parse(reader.Value);
+                                        reader.Read();
+                                    }
+                                    else if (reader.NodeType == XmlNodeType.EndElement)
+                                    {
+                                        break;
+                                    }
+                                }
                             }
                         }
                         else if (reader.NodeType == XmlNodeType.EndElement)

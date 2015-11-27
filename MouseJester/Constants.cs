@@ -28,6 +28,9 @@ namespace MouseJester
         public const string ACTION_PATH_TAG = "PATH";
         public const string ACTION_ARGS_TAG = "ARGS";
         public const string ACTION_START_IN_TAG = "START";
+        public const string GESTURE_HKEY_TAG = "GESTUREHKEY";
+        public const string MODIFIERS_TAG = "HKEYMODS";
+        public const string KEY_TAG = "HKEYKEY";
 
         public const string GESTURE_FILE_NAME = "Gestures.mjg";
         public const string APP_GUID = "2beefff3-041d-4715-8c44-012699128f27";
