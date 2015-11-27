@@ -30,7 +30,7 @@
                 <DataGridTemplateColumn Width="120" Header="Gesture">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Image Source="{Binding Path=ImagePath}" />
+                            <Image Source="{Binding Path=ImageFullPath}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

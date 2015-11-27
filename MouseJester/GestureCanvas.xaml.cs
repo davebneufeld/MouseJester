@@ -280,8 +280,9 @@ namespace MouseJester
             BitmapEncoder pngEncoder = new PngBitmapEncoder();
             pngEncoder.Frames.Add(BitmapFrame.Create(crop));
 
-            String gestureImageName = Directory.GetCurrentDirectory() + "\\" + Guid.NewGuid().ToString() + ".png";
-            using (var fs = System.IO.File.OpenWrite(gestureImageName))
+            String gestureImageName = Guid.NewGuid().ToString() + ".png";
+            String gestureImagePath = Directory.GetCurrentDirectory() + "\\" + gestureImageName;
+            using (var fs = System.IO.File.OpenWrite(gestureImagePath))
             {
                 pngEncoder.Save(fs);
             }

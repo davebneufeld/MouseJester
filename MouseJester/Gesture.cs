@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -71,6 +72,14 @@ namespace MouseJester
             set
             {
                 _ImagePath = value;
+            }
+        }
+
+        public String ImageFullPath
+        {
+            get
+            {
+                return Directory.GetCurrentDirectory() + "\\" + _ImagePath;
             }
         }
 
