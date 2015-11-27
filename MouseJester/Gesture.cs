@@ -66,7 +66,7 @@ namespace MouseJester
         {
             get
             {
-                return "C:\\Users\\qaovxtazypdl\\Source\\Repos\\MouseJester\\MouseJester\\bin\\Debug\\test.jpg";
+                return _ImagePath;
             }
             set
             {

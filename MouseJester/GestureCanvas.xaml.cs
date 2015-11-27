@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.ComponentModel;
+using System.IO;
 
 namespace MouseJester
 {
@@ -36,16 +37,15 @@ namespace MouseJester
         public Gesture drawnGesture;
         public Gesture matchedGesture;
 
-
-        public GestureCanvas(Brush drawColor, Brush outlineColor, bool drawOutline, bool isMatching /*as opposed to defining a gesture*/, bool displayPreview)
+        public GestureCanvas(bool drawOutline, bool isMatching /*as opposed to defining a gesture*/, bool displayPreview)
             : base()
         {
             InitializeComponent();
             this.isMatching = isMatching;
-            this.drawColor = drawColor;
+            this.drawColor = Brushes.Red;
             this.drawOutline = drawOutline;
-            this.outlineColor = outlineColor;
-            this.confirmColor = Brushes.Red;
+            this.outlineColor = Brushes.Black;
+            this.confirmColor = Brushes.LightSteelBlue;
             this.displayPreview = displayPreview;
             this.rawPoints = new List<Point>();
             this.mouseDown = false;
@@ -80,7 +80,7 @@ namespace MouseJester
                 outline.X2 = pos.X;
                 outline.Y1 = prevPos.Y;
                 outline.Y2 = pos.Y;
-                outline.StrokeThickness = 5;
+                outline.StrokeThickness = 13;
                 drawingCanvas.Children.Add(outline);
             }
 
@@ -94,7 +94,7 @@ namespace MouseJester
             lineSegment.X2 = pos.X;
             lineSegment.Y1 = prevPos.Y;
             lineSegment.Y2 = pos.Y;
-            lineSegment.StrokeThickness = drawOutline ? 3 : 5;
+            lineSegment.StrokeThickness = drawOutline ? 10 : 13;
             drawingCanvas.Children.Add(lineSegment);
         }
 
@@ -109,7 +109,7 @@ namespace MouseJester
             ellipse.Fill = brushColor;
             ellipse.Width = width;
             ellipse.Height = height;
-            ellipse.StrokeThickness = drawOutline ? 3 : 0;
+            ellipse.StrokeThickness = drawOutline ? 15 : 0;
             drawingCanvas.Children.Add(ellipse);
             Canvas.SetLeft(ellipse, pos.X - 6);
             Canvas.SetTop(ellipse, pos.Y - 6);
@@ -133,7 +133,7 @@ namespace MouseJester
             if (points.Count == 0) return;
 
             Point prevPos = points[0];
-            DrawEllipse(prevPos, 12, 12, drawColor, outlineColor, drawOutline);
+            DrawEllipse(prevPos, 25, 25, drawColor, outlineColor, drawOutline);
             foreach (Point pos in points)
             {
                 DrawLine(prevPos, pos, drawColor, outlineColor, drawOutline);
@@ -222,12 +222,13 @@ namespace MouseJester
 
                 if (displayPreview && closestMatch != null)
                 {
+                    this.matchedGesture = closestMatch;
                     if (isMatching) //matching. display the matched gesture.
                     {
                         this.Dispatcher.Invoke((Action)(() =>
                         {
                             drawingCanvas.Children.Clear();
-                            DrawGesture(closestMatch, confirmColor, outlineColor, true);
+                            DrawGesture(matchedGesture, confirmColor, outlineColor, true);
                         }));
                     }
                     else //defining. if too similar, display similar gesture.
@@ -236,13 +237,42 @@ namespace MouseJester
                         this.Dispatcher.Invoke((Action)(() =>
                         {
                             drawingCanvas.Children.Clear();
-                            DrawGesture(closestMatch, confirmColor, outlineColor, true);
+                            DrawGesture(matchedGesture, confirmColor, outlineColor, true);
                             MessageBox.Show(this, "Gesture too similar to a previously defined gesture.");
                         }));
                     }
                     Thread.Sleep(500);
                 }
+                else if (!isMatching)
+                {
+                    this.Dispatcher.Invoke((Action)(() =>
+                    {
+                        String gestureImageName = this.saveBitmap();
+                        drawnGesture.ImagePath = gestureImageName;
+                    }));
+                }
             }
+        }
+
+        private String saveBitmap()
+        {
+            double dpi = 96d;
+            RenderTargetBitmap rtb = new RenderTargetBitmap((int)drawingCanvas.RenderSize.Width,
+                (int)drawingCanvas.RenderSize.Height, dpi, dpi, System.Windows.Media.PixelFormats.Default);
+            rtb.Render(drawingCanvas);
+
+            var crop = new CroppedBitmap(rtb, new Int32Rect((int)minX, (int)minY, (int)(maxX - minX), (int)(maxY - minY)));
+
+            BitmapEncoder pngEncoder = new PngBitmapEncoder();
+            pngEncoder.Frames.Add(BitmapFrame.Create(crop));
+
+            String gestureImageName = Directory.GetCurrentDirectory() + "\\" + Guid.NewGuid().ToString() + ".png";
+            using (var fs = System.IO.File.OpenWrite(gestureImageName))
+            {
+                pngEncoder.Save(fs);
+            }
+
+            return gestureImageName;
         }
 
         private void ExitCanvas()

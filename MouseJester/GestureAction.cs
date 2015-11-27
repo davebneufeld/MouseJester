@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace MouseJester
 {
@@ -35,7 +36,20 @@ namespace MouseJester
         public String StartIn { get; set; }
 
         public void Execute() {
+            ProcessStartInfo processStartInfo = new ProcessStartInfo();
+            processStartInfo.WorkingDirectory = this.StartIn;
+            processStartInfo.FileName = this.Path;
+            processStartInfo.Arguments = this.Arguments;
+            processStartInfo.CreateNoWindow = true;
 
+            try
+            {
+                Process myProcess = Process.Start(processStartInfo);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
         }
     }
 }
