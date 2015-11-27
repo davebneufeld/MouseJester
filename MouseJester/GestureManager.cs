@@ -43,23 +43,6 @@ namespace MouseJester
             }
         }
 
-        private HotKey _hkeyDefine = null;
-        public HotKey hkeyDefine
-        {
-            get
-            {
-                return _hkeyDefine;
-            }
-            set
-            {
-                if (_hkeyDefine != null)
-                {
-                    _hkeyDefine.Dispose();
-                }
-                _hkeyDefine = value;
-            }
-        }
-
         private GestureManager()
         {
         }
@@ -293,7 +276,7 @@ namespace MouseJester
             }
         }
 
-        private void DefineNewGesture()
+        internal void DefineNewGesture()
         {
             GestureCanvas gDrawer = InputGesture(false);
             if (gDrawer != null && !gDrawer.defineTooSimilar)
@@ -308,10 +291,6 @@ namespace MouseJester
             if (keyID == Constants.GESTURE_INPUT_ID)
             {
                 this.MatchAndExecuteGesture();
-            }
-            else if (keyID == Constants.GESTURE_DEFINE_ID) 
-            {
-                this.DefineNewGesture();
             }
         }
 

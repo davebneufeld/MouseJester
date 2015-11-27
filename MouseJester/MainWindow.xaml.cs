@@ -47,7 +47,6 @@ namespace MouseJester
             ShowEvent += ShowEventHandler;
             CloseEvent += CloseEventHandler;
             GestureManager.Instance.hkey = new HotKey(Constants.GESTURE_INPUT_ID, (uint)(ModifierKeys.Control), (uint)VirtualKey.B, GestureManager.Instance.HotKeyHandler);
-            GestureManager.Instance.hkeyDefine = new HotKey(Constants.GESTURE_DEFINE_ID, (uint)(ModifierKeys.Control), (uint)VirtualKey.V, GestureManager.Instance.HotKeyHandler);
             gestureGrid.ItemsSource = GestureCollection;
         }
 
@@ -106,7 +105,7 @@ namespace MouseJester
 
         private void NewGestureButtonClick(object sender, RoutedEventArgs e)
         {
-
+            GestureManager.Instance.DefineNewGesture();
         }
 
         private void SaveButtonClick(object sender, RoutedEventArgs e)
