@@ -55,7 +55,11 @@ namespace MouseJester
             this.defineTooSimilar = false;
             this.drawnGesture = null;
             this.matchedGesture = null;
-            GestureManager.Instance.hkey.Disabled = true;
+
+            if (GestureManager.Instance.hkey != null)
+            {
+                GestureManager.Instance.hkey.Disabled = true;
+            }
 
             drawingCanvas = new Canvas();
             drawingCanvas.MouseDown += MouseDownEventHandler;
@@ -360,7 +364,10 @@ namespace MouseJester
         {
             if(DialogResult == null)
             {
-                GestureManager.Instance.hkey.Disabled = false;
+                if (GestureManager.Instance.hkey != null)
+                {
+                    GestureManager.Instance.hkey.Disabled = false;
+                }
                 DialogResult = drawnGesture != null;
             }
         }
