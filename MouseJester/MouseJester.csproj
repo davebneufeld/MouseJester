@@ -82,6 +82,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="GestureAction.cs" />
     <Compile Include="GestureManager.cs" />
     <Compile Include="Commands.cs" />
     <Compile Include="HotKey.cs" />

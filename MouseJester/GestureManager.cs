@@ -7,6 +7,7 @@ using System.Xml;
 using System.Windows;
 using System.Windows.Media;
 using System.IO;
+using System.Collections.ObjectModel;
 
 namespace MouseJester
 {
@@ -24,8 +25,6 @@ namespace MouseJester
                 return _Instance;
             }
         }
-
-        public List<Gesture> GestureCollection;
 
         private HotKey _hkey = null;
         public HotKey hkey
@@ -63,15 +62,14 @@ namespace MouseJester
 
         private GestureManager()
         {
-            GestureCollection = new List<Gesture>();
         }
 
         public void Save()
         {
-            Save(Constants.GESTURE_FILE_NAME, GestureCollection);
+            Save(Constants.GESTURE_FILE_NAME, MainWindow.Instance.GestureCollection);
         }
 
-        public void Save(string fileName, List<Gesture> gestures)
+        public void Save(string fileName, ObservableCollection<Gesture> gestures)
         {
             XmlWriterSettings xmlSettings = new XmlWriterSettings();
             xmlSettings.Indent = true;
@@ -84,7 +82,7 @@ namespace MouseJester
                 xmlWriter.WriteStartElement(Constants.GESTURE_TAG);
                 {
                     xmlWriter.WriteStartElement(Constants.NAME_TAG);
-                    xmlWriter.WriteString(g.Name);
+                    xmlWriter.WriteString(g.Description);
                     xmlWriter.WriteEndElement();
 
                     xmlWriter.WriteStartElement(Constants.DATA_TAG);
@@ -158,7 +156,7 @@ namespace MouseJester
 
         public void Load(string fileName)
         {
-            Clear();
+            //clear();
             try
             {
                 using (XmlReader reader = XmlReader.Create(fileName))
@@ -186,17 +184,17 @@ namespace MouseJester
 
         public void Clear()
         {
-            GestureCollection.Clear();
+            MainWindow.Instance.GestureCollection.Clear();
         }
 
         public void Add(Gesture g)
         {
-            GestureCollection.Add(g);
+            MainWindow.Instance.GestureCollection.Add(g);
         }
 
         public int Count()
         {
-            return GestureCollection.Count;
+            return MainWindow.Instance.GestureCollection.Count;
         }
 
         public void HotKeyHandler(Object sender, HotKeyEventArgs e)
@@ -245,7 +243,7 @@ namespace MouseJester
         public KeyValuePair<double, Gesture> Recognize(Gesture input)
         {
             KeyValuePair<double, Gesture> bestMatch = new KeyValuePair<double, Gesture>(1, null);
-            foreach(Gesture definedGesture in GestureCollection)
+            foreach(Gesture definedGesture in MainWindow.Instance.GestureCollection)
             {
                 double matchError = PerformMatch(input, definedGesture);
                 if (matchError < bestMatch.Key)
@@ -269,6 +267,7 @@ namespace MouseJester
                 distance = distance > 1 ? 2 - distance : distance;
                 matchError += weight * Math.Pow(distance, 2);
             }
+
             return matchError;
         }
     }

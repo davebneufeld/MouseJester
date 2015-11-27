@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Threading;
+using System.Collections.ObjectModel;
 
 namespace MouseJester
 {
@@ -29,23 +30,25 @@ namespace MouseJester
                 if (_Instance == null)
                 {
                     _Instance = new MainWindow();
+                    GestureManager.Instance.Load();
                 }
                 return _Instance;
             }
         }
 
+        public ObservableCollection<Gesture> GestureCollection;
         public event EventHandler ShowEvent;
         public event EventHandler CloseEvent;
 
         private MainWindow() : base()
         {
+            GestureCollection = new ObservableCollection<Gesture>();
             InitializeComponent();
             ShowEvent += ShowEventHandler;
             CloseEvent += CloseEventHandler;
-
-            GestureManager.Instance.Load();
             GestureManager.Instance.hkey = new HotKey(Constants.GESTURE_INPUT_ID, (uint)(ModifierKeys.Control), (uint)VirtualKey.B, GestureManager.Instance.HotKeyHandler);
             GestureManager.Instance.hkeyDefine = new HotKey(Constants.GESTURE_DEFINE_ID, (uint)(ModifierKeys.Control), (uint)VirtualKey.V, GestureManager.Instance.HotKeyHandler);
+            gestureGrid.ItemsSource = GestureCollection;
         }
 
         protected override void OnStateChanged(EventArgs e)

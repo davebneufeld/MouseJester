@@ -11,12 +11,16 @@ namespace MouseJester
 {
     public class Gesture
     {
-        private string _Name;
-        public string Name
+        private string _Description;
+        public string Description
         {
             get
             {
-                return _Name;
+                return _Description;
+            }
+            set
+            {
+                _Description = value;
             }
         }
 
@@ -38,11 +42,23 @@ namespace MouseJester
             }
         }
 
+        private String _ImagePath;
+        public String ImagePath
+        {
+            get
+            {
+                return "C:\\Users\\qaovxtazypdl\\Source\\Repos\\MouseJester\\MouseJester\\bin\\Debug\\test.jpg";
+            }
+        }
+
+        public GestureAction Action { get; set; }
+
         public Gesture(Gesture other)
         {
-            this._Name = null;
+            this._Description = null;
             this._PointVector = new List<Point>(other.PointVector);
             this._Directions = new List<double>(other.Directions);
+            this.Action = new GestureAction(other.Action);
         }
 
         public Gesture(List<Point> rawPoints)
@@ -75,6 +91,7 @@ namespace MouseJester
                 maxX += deltaDiff / 2;
             }
 
+            this.Action = new GestureAction();
             Initialize(rawPoints, minX, minY, maxX, maxY);
         }
 
@@ -85,10 +102,11 @@ namespace MouseJester
 
         private void Initialize(List<Point> rawPoints, double minX, double minY, double maxX, double maxY)
         {
-            this._Name = null;
+            this._Description = null;
             this._PointVector = new List<Point>();
             this._Directions = new List<double>();
             this.scaleAndCenterGesture(rawPoints, minX, minY, maxX, maxY);
+            this.Action = new GestureAction();
         }
 
         private void scaleAndCenterGesture(List<Point> rawPoints, double minX, double minY, double maxX, double maxY)
@@ -134,13 +152,8 @@ namespace MouseJester
 
         public void Register(string Name)
         {
-            this._Name = Name;
+            this._Description = Name;
             GestureManager.Instance.Add(this);
-        }
-
-        public void SetAction()
-        {
-
         }
 
         public void ExecuteAction()

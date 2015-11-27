@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:tb="http://www.hardcodet.net/taskbar"
         xmlns:local="clr-namespace:MouseJester"
-        Title="MainWindow" Height="518.02" Width="820.376"
+        Title="MainWindow" Height="650.02" Width="909.376"
         WindowState="Minimized">
     <Grid>
         <!-- declare the command as a local resource -->
@@ -24,12 +24,34 @@
                 </ContextMenu>
             </tb:TaskbarIcon.ContextMenu>
         </tb:TaskbarIcon>
-        <DataGrid HorizontalAlignment="Left" Height="468" Margin="10,10,0,0" VerticalAlignment="Top" Width="792">
+        <DataGrid Name="gestureGrid" RowHeight="100" HorizontalAlignment="Left" Height="550" Margin="10,10,0,0" VerticalAlignment="Top" Width="880" CanUserResizeColumns="False">
             <DataGrid.Columns>
-                <DataGridTemplateColumn/>
-                <DataGridTextColumn/>
-                <DataGridTemplateColumn/>
+
+                <DataGridTemplateColumn Width="120" Header="Gesture">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding Path=ImagePath}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTextColumn Width="140" Header="Description" Binding="{Binding Path=Description}"/>
+
+                <DataGridTextColumn Width="180" Header="Trigger Path" Binding="{Binding Path=Action.Path}"/>
+                <DataGridTextColumn Width="180" Header="Arguments" Binding="{Binding Path=Action.Arguments}"/>
+                <DataGridTextColumn Width="180" Header="Start In" Binding="{Binding Path=Action.StartIn}"/>
+
+                <DataGridTemplateColumn Width="80">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Remove" Margin="10,10,10,10"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
+        <Button Content="Save" HorizontalAlignment="Left" Margin="815,575,0,0" VerticalAlignment="Top" Width="75" Height="32" Click="Button_Click"/>
+        <Button Content="New" HorizontalAlignment="Left" Margin="10,575,0,0" VerticalAlignment="Top" Width="75" Height="32"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="365,580,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="150"/>
     </Grid>
 </Window>
