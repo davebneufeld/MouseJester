@@ -66,6 +66,60 @@ namespace MouseJester
             this.Focus();  
         }
 
+        // HueToBrushColor and helpers taken from http://stackoverflow.com/questions/4793729/rgb-to-hsl-and-back-calculation-problems
+        public SolidColorBrush HueToBrushColor(double Hue)
+        {
+            byte r, g, b;
+            double Saturation = 1;
+            double Luminosity = 0.5;
+
+            if (Saturation == 0)
+            {
+                r = (byte)Math.Round(Luminosity * 255d);
+                g = (byte)Math.Round(Luminosity * 255d);
+                b = (byte)Math.Round(Luminosity * 255d);
+            }
+            else
+            {
+                double t1, t2;
+                double th = Hue / 360.0d;
+
+                if (Luminosity < 0.5d)
+                {
+                    t2 = Luminosity * (1d + Saturation);
+                }
+                else
+                {
+                    t2 = (Luminosity + Saturation) - (Luminosity * Saturation);
+                }
+                t1 = 2d * Luminosity - t2;
+
+                double tr, tg, tb;
+                tr = th + (1.0d / 3.0d);
+                tg = th;
+                tb = th - (1.0d / 3.0d);
+
+                tr = ColorCalc(tr, t1, t2);
+                tg = ColorCalc(tg, t1, t2);
+                tb = ColorCalc(tb, t1, t2);
+                r = (byte)Math.Round(tr * 255d);
+                g = (byte)Math.Round(tg * 255d);
+                b = (byte)Math.Round(tb * 255d);
+            }
+            return new SolidColorBrush(Color.FromArgb(255, r, g, b));
+        }
+
+        private double ColorCalc(double c, double t1, double t2)
+        {
+
+            if (c < 0) c += 1d;
+            if (c > 1) c -= 1d;
+            if (6.0d * c < 1.0d) return t1 + (t2 - t1) * 6.0d * c;
+            if (2.0d * c < 1.0d) return t2;
+            if (3.0d * c < 2.0d) return t1 + (t2 - t1) * (2.0d / 3.0d - c) * 6.0d;
+            return t1;
+        }
+
         private void DrawLine(Point prevPos, Point pos, Brush brushColor, Brush outlineColor, bool drawOutline)
         {
             if (drawOutline)
@@ -94,7 +148,12 @@ namespace MouseJester
 
             if (brushColor == null)
             {
+                //* Custom built coloring 
                 lineSegment.Stroke = new SolidColorBrush(Color.FromArgb(255, (byte)(255 * redFraction), (byte)(255 *(1 - greenFraction)), (byte)(255 * (1 - redFraction))));
+                /*/// standard HSL mapping
+                double AngleInDegrees = ((Math.Atan2(pos.Y - prevPos.Y, pos.X - prevPos.X) / Math.PI) + 1) * 180;
+                lineSegment.Stroke = HueToBrushColor(AngleInDegrees);
+                //*/
             }
             else
             {

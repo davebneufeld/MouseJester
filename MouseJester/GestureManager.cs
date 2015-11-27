@@ -381,7 +381,7 @@ namespace MouseJester
 
         public GestureCanvas InputGesture(bool isMatching /*as opposed to defining*/)
         {
-            GestureCanvas drawer = new GestureCanvas(true, isMatching, true);
+            GestureCanvas drawer = new GestureCanvas(false, isMatching, true);
             if (drawer.DialogResult == true)
             {
                 return drawer;
