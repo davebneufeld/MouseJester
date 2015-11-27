@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:tb="http://www.hardcodet.net/taskbar"
         xmlns:local="clr-namespace:MouseJester"
-        Title="MouseJester" Height="660.02" Width="919.376" ResizeMode="CanMinimize"
+        Title="MouseJester" Height="660" Width="935" ResizeMode="CanMinimize"
         WindowState="Minimized" Visibility="Hidden" Icon="MouseJester.ico">
     <Grid>
         <!-- declare the command as a local resource -->
@@ -24,7 +24,7 @@
                 </ContextMenu>
             </tb:TaskbarIcon.ContextMenu>
         </tb:TaskbarIcon>
-        <DataGrid Name="gestureGrid" RowHeaderWidth="0" AutoGenerateColumns="False" RowHeight="100" HorizontalAlignment="Left" Height="550" Margin="10,10,0,0" VerticalAlignment="Top" Width="882" CanUserResizeColumns="False">
+        <DataGrid Name="gestureGrid" VerticalScrollBarVisibility="Visible" RowHeaderWidth="0" AutoGenerateColumns="False" RowHeight="100" HorizontalAlignment="Left" Height="550" Margin="10,10,0,0" VerticalAlignment="Top" Width="898" CanUserResizeColumns="False">
             <DataGrid.Columns>
 
                 <DataGridTemplateColumn Width="120" Header="Gesture">

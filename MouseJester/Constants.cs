@@ -9,7 +9,8 @@ namespace MouseJester
     internal static class Constants
     {
         public const int GESTURE_INPUT_ID = 1;
-        public const double MATCH_THRESHOLD = 0.05;
+        public const double MATCH_THRESHOLD = 0.025;
+        public const double DEFINE_NEW_THRESHOLD = 0.015;
         public const double GESTURE_WIDTH = 1000;
         public const double GESTURE_HEIGHT = 1000;
         public const int GESTURE_POINTS = 250;

@@ -227,7 +227,8 @@ namespace MouseJester
             {
                 KeyValuePair<double, Gesture> matched = GestureManager.Instance.Recognize(drawnGesture);
                 double matchError = matched.Key;
-                Gesture closestMatch = matchError < Constants.MATCH_THRESHOLD? matched.Value : null;
+                double threshold = isMatching ? Constants.MATCH_THRESHOLD : Constants.DEFINE_NEW_THRESHOLD;
+                Gesture closestMatch = matchError < threshold ? matched.Value : null;
 
                 if (displayPreview && closestMatch != null)
                 {
@@ -236,6 +237,7 @@ namespace MouseJester
                     {
                         this.Dispatcher.Invoke((Action)(() =>
                         {
+                            MessageBox.Show("" + matchError);
                             drawingCanvas.Children.Clear();
                             DrawGesture(matchedGesture, confirmColor, outlineColor, true);
                         }));
@@ -247,7 +249,6 @@ namespace MouseJester
                         {
                             drawingCanvas.Children.Clear();
                             DrawGesture(matchedGesture, confirmColor, outlineColor, true);
-                            MessageBox.Show(this, "Gesture too similar to a previously defined gesture.");
                         }));
                     }
                     Thread.Sleep(500);

@@ -4,7 +4,7 @@
         Title="GestureDrawer" WindowState="Maximized" WindowStyle="None" ResizeMode="NoResize"
         ShowInTaskbar="False" ShowActivated="True" Background="#30FFFFFF" AllowsTransparency="True"
         MouseMove="MouseMoveEventHandler" MouseDown="MouseDownEventHandler" MouseUp="MouseUpEventHandler"
-        KeyDown="KeyDownEventHandler">
+        KeyDown="KeyDownEventHandler" Topmost="True">
     <Grid Name="drawingGrid">
     </Grid>
 </Window>

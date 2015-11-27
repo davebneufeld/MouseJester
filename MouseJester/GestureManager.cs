@@ -63,10 +63,36 @@ namespace MouseJester
             MainWindow.Instance.SetHotKeyString(HotKey.GetKeyComboString(InitiateGestureModifiers, InitiateGestureKey));
         }
 
+        private void RemoveUnusedGestureImages()
+        {
+            // remove all png files in the directory that are not in the paths.
+            List<String> pngFilesInDirectory = new List<String>(Directory.GetFiles(Directory.GetCurrentDirectory(), "*-*-*-*-*.png"));
+
+            List<String> currentImagePaths = new List<String>();
+            foreach (Gesture g in MainWindow.Instance.GestureCollection)
+            {
+                currentImagePaths.Add(g.ImagePath);
+            }
+
+            IEnumerable<String> unusedPngFiles = pngFilesInDirectory.Except(currentImagePaths);
+            foreach (String unusedFile in unusedPngFiles)
+            {
+                try
+                {
+                    File.Delete(unusedFile);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
+            }
+        }
+
         public void Save()
         {
             Save(Constants.GESTURE_FILE_NAME, MainWindow.Instance.GestureCollection);
             UpdateHotKey();
+            RemoveUnusedGestureImages();
         }
 
         public void Save(string fileName, ObservableCollection<Gesture> gestures)
@@ -236,12 +262,14 @@ namespace MouseJester
 
         public void Load()
         {
+            List<String> currentImagePaths = new List<String>();
+
             MainWindow.Instance.GestureCollection.Clear();
-            Load(Constants.GESTURE_FILE_NAME);
+            Load(Constants.GESTURE_FILE_NAME, currentImagePaths);
             UpdateHotKey();
         }
 
-        public void Load(string fileName)
+        public void Load(string fileName, List<String> currentImagePaths)
         {
             try
             {
@@ -336,6 +364,10 @@ namespace MouseJester
             {
                 Gesture gDrawn = gDrawer.drawnGesture;
                 this.Add(gDrawn);
+            }
+            else if (gDrawer.defineTooSimilar)
+            {
+                MessageBox.Show("Gesture too similar to a previously defined gesture.");
             }
         }
 
