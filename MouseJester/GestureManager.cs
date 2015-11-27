@@ -223,12 +223,12 @@ namespace MouseJester
 
         public void Load()
         {
+            MainWindow.Instance.GestureCollection.Clear();
             Load(Constants.GESTURE_FILE_NAME);
         }
 
         public void Load(string fileName)
         {
-            //clear();
             try
             {
                 using (XmlReader reader = XmlReader.Create(fileName))
@@ -262,6 +262,12 @@ namespace MouseJester
         public void Add(Gesture g)
         {
             MainWindow.Instance.GestureCollection.Add(g);
+        }
+
+        public void Remove(int internalGestureID)
+        {
+            Gesture item = MainWindow.Instance.GestureCollection.Single(x => x.InternalID == internalGestureID);
+            MainWindow.Instance.GestureCollection.Remove(item);
         }
 
         public int Count()

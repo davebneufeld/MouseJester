@@ -11,6 +11,25 @@ namespace MouseJester
 {
     public class Gesture
     {
+        private static int InternalGestureID = 0;
+
+        private static int getNextInternalID()
+        {
+            return InternalGestureID++;
+        }
+
+        private int _InternalID = -1;
+        public int InternalID
+        {
+            get
+            {
+                if (_InternalID == -1)
+                {
+                    _InternalID = Gesture.getNextInternalID();
+                }
+                return _InternalID;
+            }
+        }
         private string _Description;
         public string Description
         {

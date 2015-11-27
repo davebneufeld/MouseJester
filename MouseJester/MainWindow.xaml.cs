@@ -113,5 +113,19 @@ namespace MouseJester
         {
             GestureManager.Instance.Save();
         }
+
+        private void ReloadButtonClick(object sender, RoutedEventArgs e)
+        {
+            GestureManager.Instance.Load();
+        }
+
+        private void RemoveGestureClick(object sender, RoutedEventArgs e)
+        {
+            if (sender != null)
+            {
+                int internalGestureID = (int)(sender as Button).Tag;
+                GestureManager.Instance.Remove(internalGestureID);
+            }
+        }
     }
 }

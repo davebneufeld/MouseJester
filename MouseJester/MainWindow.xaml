@@ -44,7 +44,7 @@
                 <DataGridTemplateColumn Width="80">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Content="Remove" Margin="10,10,10,10"/>
+                            <Button Content="Remove" Margin="10,10,10,10" Click="RemoveGestureClick" Tag="{Binding Path=InternalID}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -53,5 +53,6 @@
         <Button Content="Save" HorizontalAlignment="Left" Margin="815,575,0,0" VerticalAlignment="Top" Width="75" Height="32" Click="SaveButtonClick"/>
         <Button Content="New" HorizontalAlignment="Left" Margin="10,575,0,0" VerticalAlignment="Top" Width="75" Height="32" Click="NewGestureButtonClick"/>
         <TextBox HorizontalAlignment="Left" Height="23" Margin="376,580,0,0" TextWrapping="NoWrap" VerticalAlignment="Top" Width="150" />
+        <Button Content="Reload" HorizontalAlignment="Left" Margin="715,575,0,0" VerticalAlignment="Top" Width="75" Height="32" Click="ReloadButtonClick"/>
     </Grid>
 </Window>
