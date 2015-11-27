@@ -237,7 +237,6 @@ namespace MouseJester
                     {
                         this.Dispatcher.Invoke((Action)(() =>
                         {
-                            MessageBox.Show("" + matchError);
                             drawingCanvas.Children.Clear();
                             DrawGesture(matchedGesture, confirmColor, outlineColor, true);
                         }));
