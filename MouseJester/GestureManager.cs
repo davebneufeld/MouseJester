@@ -395,7 +395,7 @@ namespace MouseJester
                     }
                 }
             }
-            else if (gDrawer.defineTooSimilar)
+            else if (gDrawer != null && gDrawer.defineTooSimilar)
             {
                 MessageBox.Show("Gesture too similar to a previously defined gesture.");
             }
