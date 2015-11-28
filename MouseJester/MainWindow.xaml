@@ -43,7 +43,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="180" Header="Trigger Path" Binding="{Binding Path=Action.Path}">
+                <DataGridTextColumn Width="180" Header="Path" Binding="{Binding Path=Action.Path}">
                     <DataGridTextColumn.ElementStyle>
                         <Style>
                             <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
@@ -57,7 +57,7 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn Width="180" Header="Start In" Binding="{Binding Path=Action.StartIn}">
+                <DataGridTextColumn Width="180" Header="Working Directory" Binding="{Binding Path=Action.StartIn}">
                     <DataGridTextColumn.ElementStyle>
                         <Style>
                             <Setter Property="TextBlock.TextWrapping" Value="Wrap" />

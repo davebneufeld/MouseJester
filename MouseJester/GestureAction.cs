@@ -37,7 +37,14 @@ namespace MouseJester
 
         public void Execute() {
             ProcessStartInfo processStartInfo = new ProcessStartInfo();
-            processStartInfo.WorkingDirectory = this.StartIn;
+            if (!String.IsNullOrEmpty(this.StartIn) || String.IsNullOrEmpty(this.Path))
+            {
+                processStartInfo.WorkingDirectory = this.StartIn;
+            }
+            else
+            {
+                processStartInfo.WorkingDirectory = System.IO.Path.GetDirectoryName(this.Path);
+            }
             processStartInfo.FileName = this.Path;
             processStartInfo.Arguments = this.Arguments;
             processStartInfo.CreateNoWindow = true;

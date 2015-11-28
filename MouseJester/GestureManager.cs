@@ -362,7 +362,11 @@ namespace MouseJester
         internal void DefineNewGesture()
         {
             GestureCanvas gDrawer = InputGesture(false);
-            if (gDrawer != null && !gDrawer.defineTooSimilar)
+            if (gDrawer == null)
+            {
+                // no op
+            }
+            else if (!gDrawer.defineTooSimilar)
             {
                 Gesture gDrawn = gDrawer.drawnGesture;
                 this.Add(gDrawn);
