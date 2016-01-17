@@ -24,7 +24,7 @@
                 </ContextMenu>
             </tb:TaskbarIcon.ContextMenu>
         </tb:TaskbarIcon>
-        <DataGrid Name="gestureGrid" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled" ColumnHeaderHeight="25" RowHeaderWidth="0" AutoGenerateColumns="False" RowHeight="100" Margin="10,10,10,61" CanUserResizeColumns="False">
+        <DataGrid Name="gestureGrid" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled" ColumnHeaderHeight="25" RowHeaderWidth="0" AutoGenerateColumns="False" RowHeight="100" Margin="10,10,10,61" CanUserResizeColumns="False">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Width="120" Header="Gesture">
                     <DataGridTemplateColumn.CellTemplate>
@@ -65,7 +65,7 @@
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
 
-                <DataGridTemplateColumn Width="92">
+                <DataGridTemplateColumn Width="104">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button Content="Remove" Margin="10,10,10,10" Click="RemoveGestureClick" Tag="{Binding Path=InternalID}"/>
