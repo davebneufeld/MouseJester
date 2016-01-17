@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:tb="http://www.hardcodet.net/taskbar"
         xmlns:local="clr-namespace:MouseJester"
-        Title="MouseJester" Height="642" Width="935" ResizeMode="CanMinimize"
+        Title="MouseJester" Height="630" Width="935" ResizeMode="CanMinimize"
         WindowState="Minimized" Visibility="Hidden" Icon="MouseJester.ico">
     <Grid Margin="0,0,4,6">
         <!-- declare the command as a local resource -->
@@ -24,7 +24,7 @@
                 </ContextMenu>
             </tb:TaskbarIcon.ContextMenu>
         </tb:TaskbarIcon>
-        <DataGrid Name="gestureGrid" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled" ColumnHeaderHeight="25" RowHeaderWidth="0" AutoGenerateColumns="False" RowHeight="100" HorizontalAlignment="Left" Margin="10,10,0,61" Width="898" CanUserResizeColumns="False">
+        <DataGrid Name="gestureGrid" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled" ColumnHeaderHeight="25" RowHeaderWidth="0" AutoGenerateColumns="False" RowHeight="100" Margin="10,10,10,61" CanUserResizeColumns="False">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Width="120" Header="Gesture">
                     <DataGridTemplateColumn.CellTemplate>
@@ -65,7 +65,7 @@
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
 
-                <DataGridTemplateColumn Width="80">
+                <DataGridTemplateColumn Width="92">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Button Content="Remove" Margin="10,10,10,10" Click="RemoveGestureClick" Tag="{Binding Path=InternalID}"/>
@@ -74,10 +74,10 @@
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <Button Content="Save" HorizontalAlignment="Left" Margin="833,0,0,13" Width="75" Click="SaveButtonClick" Height="32" VerticalAlignment="Bottom"/>
+        <Button Content="Save" HorizontalAlignment="Left" Margin="840,0,0,14" Width="75" Click="SaveButtonClick" Height="32" VerticalAlignment="Bottom"/>
         <Button Content="New" HorizontalAlignment="Left" Margin="10,0,0,13" VerticalAlignment="Bottom" Width="75" Height="32" Click="NewGestureButtonClick"/>
-        <Button Content="Reload" HorizontalAlignment="Left" Margin="731,0,0,13" Width="75" Click="ReloadButtonClick" Height="32" VerticalAlignment="Bottom"/>
+        <Button Content="Reload" HorizontalAlignment="Left" Margin="737,0,0,13" Width="75" Click="ReloadButtonClick" Height="32" VerticalAlignment="Bottom"/>
         <Label Content="Activation Hotkey" HorizontalAlignment="Left" Margin="304,0,0,17" Height="26" VerticalAlignment="Bottom"/>
-        <TextBox Name="HotKeyTextBox" HorizontalAlignment="Left" Margin="413,0,0,17" TextWrapping="NoWrap" Width="150" IsReadOnly="True" KeyDown="WindowCapTextBox_KeyDown" Height="23" VerticalAlignment="Bottom" />
+        <TextBox Name="HotKeyTextBox" HorizontalAlignment="Left" Margin="413,0,0,19" TextWrapping="NoWrap" Width="150" IsReadOnly="True" KeyDown="WindowCapTextBox_KeyDown" Height="20" VerticalAlignment="Bottom"/>
     </Grid>
 </Window>
